@@ -70,19 +70,22 @@
     "react-native": "0.70.5",
     "react-native-builder-bob": "^0.20.0",
     "release-it": "^15.0.0",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.2",
+    "@expo/vector-icons": "^13.0.0",
+    "react-native-reanimated": "~2.12.0"
   },
   "resolutions": {
     "@types/react": "17.0.21"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@expo/vector-icons": "*",
+    "react-native-reanimated": "*"
   },
   "engines": {
     "node": ">= 16.0.0"
   },
-  "packageManager": "^yarn@1.22.15",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [

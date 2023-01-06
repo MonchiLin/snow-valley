@@ -1,18 +1,66 @@
-import * as React from 'react';
+import { Button, StyleSheet, View } from 'react-native';
+import { Country, CountryInput, PhoneNumberInput } from 'snow-valley';
+import { useState } from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'snow-valley';
+// https://emojipedia.org/flags/
+const countries: Country[] = [
+  {
+    name: 'Chinese mainland',
+    code: '86',
+    flag: '🇨🇳',
+  },
+  {
+    name: 'United States',
+    code: '1',
+    flag: '🇺🇸',
+  },
+];
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [country, setCountry] = useState<Country | null>(null);
+  const [code, setCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const onPress = () => {
+    setCountry(countries[0]!);
+  };
+  const onPress1 = () => {
+    setCountry(countries[1]!);
+  };
+
+  const onPress2 = () => {
+    setCountry(null);
+  };
+
+  const onCodeChange = (e: string) => {
+    if (e) {
+      const country = countries.find((c) => c.code === e);
+      if (country) {
+        setCountry(country);
+      } else {
+        setCountry(null);
+      }
+    }
+    setCode(e);
+  };
+
+  const onPhoneNumberChange = (e: string) => {
+    setPhoneNumber(e);
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <CountryInput country={country} />
+      <View style={{ height: 20 }} />
+      <PhoneNumberInput
+        code={code}
+        phoneNumber={phoneNumber}
+        onPhoneNumberChange={onPhoneNumberChange}
+        onCodeChange={onCodeChange}
+      />
+      <Button title={'设置中国'} onPress={onPress} />
+      <Button title={'设置 US'} onPress={onPress1} />
+      <Button title={'清除'} onPress={onPress2} />
     </View>
   );
 }
@@ -22,6 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   box: {
     width: 60,

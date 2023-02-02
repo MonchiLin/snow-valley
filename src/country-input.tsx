@@ -1,8 +1,8 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import {
-  SelectableInput,
+  FloatingInput,
   SelectableInputSwitchView,
-} from './base/selectable-input';
+} from './base/floating-input';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export type Country = {
@@ -17,11 +17,7 @@ export const CountryInput = (props: {
 }) => {
   return (
     <TouchableOpacity onPress={props.onPress}>
-      <SelectableInput
-        onPress={props.onPress}
-        label={'Country'}
-        focused={props.country !== null}
-      >
+      <FloatingInput label={'Country'} focused={props.country !== null}>
         <>
           <SelectableInputSwitchView identifier={props.country?.name}>
             <View style={{ flexDirection: 'row' }}>
@@ -37,7 +33,7 @@ export const CountryInput = (props: {
             color={props.country ? '#64A0E8' : '#A8A8A8'}
           />
         </>
-      </SelectableInput>
+      </FloatingInput>
     </TouchableOpacity>
   );
 };

@@ -1,5 +1,10 @@
-import { Button, StyleSheet, View } from 'react-native';
-import { Country, CountryInput, PhoneNumberInput } from 'snow-valley';
+import { Button, Keyboard, StyleSheet, View } from 'react-native';
+import {
+  Country,
+  CountryInput,
+  PhoneNumberInput,
+  ThemeProvider,
+} from 'snow-valley';
 import { useState } from 'react';
 
 // https://emojipedia.org/flags/
@@ -48,20 +53,27 @@ export default function App() {
     setPhoneNumber(e);
   };
 
+  const hiddenKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   return (
-    <View style={styles.container}>
-      <CountryInput country={country} />
-      <View style={{ height: 20 }} />
-      <PhoneNumberInput
-        code={code}
-        phoneNumber={phoneNumber}
-        onPhoneNumberChange={onPhoneNumberChange}
-        onCodeChange={onCodeChange}
-      />
-      <Button title={'设置中国'} onPress={onPress} />
-      <Button title={'设置 US'} onPress={onPress1} />
-      <Button title={'清除'} onPress={onPress2} />
-    </View>
+    <ThemeProvider>
+      <View style={styles.container}>
+        <CountryInput country={country} />
+        <View style={{ height: 20 }} />
+        <PhoneNumberInput
+          code={code}
+          phoneNumber={phoneNumber}
+          onPhoneNumberChange={onPhoneNumberChange}
+          onCodeChange={onCodeChange}
+        />
+        <Button title={'设置中国'} onPress={onPress} />
+        <Button title={'设置 US'} onPress={onPress1} />
+        <Button title={'清除'} onPress={onPress2} />
+        <Button title={'隐藏键盘'} onPress={hiddenKeyboard} />
+      </View>
+    </ThemeProvider>
   );
 }
 

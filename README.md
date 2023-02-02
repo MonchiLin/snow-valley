@@ -1,6 +1,6 @@
 # snow-valley
 
-a
+Snow Valley is a Telegram unofficial app.
 
 ## Installation
 

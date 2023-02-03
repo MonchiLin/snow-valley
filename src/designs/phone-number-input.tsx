@@ -1,7 +1,7 @@
 import { Text, TextInput, View } from 'react-native';
-import { FloatingInput } from './base/floating-input';
+import { FloatingInput } from '../base/floating-input';
 import { useRef, useState } from 'react';
-import { useTheme } from './context/theme-provider';
+import { useSnowValley } from '../context/snow-valley.context';
 
 export type PhoneNumberInputProps = {
   code: string;
@@ -17,7 +17,7 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
     codeInput: false,
     phoneNumberInput: true,
   });
-  const { component } = useTheme();
+  const { component } = useSnowValley();
 
   const onCodeChange = (value: string) => {
     if (value.length >= 3) {

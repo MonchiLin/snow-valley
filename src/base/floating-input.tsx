@@ -6,7 +6,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from 'react-native-reanimated';
-import { useTheme } from 'snow-valley';
+import { useSnowValley } from '../context/snow-valley.context';
 
 export const SelectableInputSwitchView = (props: {
   children: ReactNode;
@@ -15,9 +15,7 @@ export const SelectableInputSwitchView = (props: {
   const yOffset = useSharedValue(20);
   const opacity = useSharedValue(0);
   const prevIdentifier = useRef(props.identifier);
-  const [currentChildren, setCurrentChildren] = useState<ReactNode>(
-    props.children
-  );
+  const [currentChildren, setCurrentChildren] = useState<ReactNode>(props.children);
 
   const labelOffsetAnimatedStyles = useAnimatedStyle(() => {
     return {
@@ -60,14 +58,9 @@ export const SelectableInputSwitchView = (props: {
       opacity.value = withSpring(0, { mass: 1 });
     }
     prevIdentifier.current = props.identifier;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.children, props.identifier]);
 
-  return (
-    <Animated.View style={[labelOffsetAnimatedStyles]}>
-      {currentChildren}
-    </Animated.View>
-  );
+  return <Animated.View style={[labelOffsetAnimatedStyles]}>{currentChildren}</Animated.View>;
 };
 
 export type SelectableInputProps = {
@@ -79,14 +72,10 @@ export type SelectableInputProps = {
 };
 
 export const FloatingInput = (props: SelectableInputProps) => {
-  const { component } = useTheme();
+  const { component } = useSnowValley();
   const labelOffset = useSharedValue(0);
-  const containerBorderColor = useSharedValue(
-    component.FloatingInput.unFocused.borderColor
-  );
-  const labelColor = useSharedValue(
-    component.FloatingInput.unFocused.labelColor
-  );
+  const containerBorderColor = useSharedValue(component.FloatingInput.unFocused.borderColor);
+  const labelColor = useSharedValue(component.FloatingInput.unFocused.labelColor);
 
   const labelFontSize = useSharedValue(16);
 
@@ -116,20 +105,16 @@ export const FloatingInput = (props: SelectableInputProps) => {
       labelFontSize.value = withSpring(12, { mass: 0.3 });
     } else {
       labelOffset.value = withSpring(0, { mass: 0.3 });
-      containerBorderColor.value =
-        component.FloatingInput.unFocused.borderColor;
+      containerBorderColor.value = component.FloatingInput.unFocused.borderColor;
       labelColor.value = component.FloatingInput.unFocused.labelColor;
       labelFontSize.value = withSpring(16, { mass: 0.3 });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.focused]);
 
   return (
     <Animated.View style={[styles.container, containerAnimatedStyles]}>
       <Animated.View style={[styles.labelContainer, labelOffsetAnimatedStyles]}>
-        <Animated.Text style={[labelStyles, props.labelStyle]}>
-          {props.label}
-        </Animated.Text>
+        <Animated.Text style={[labelStyles, props.labelStyle]}>{props.label}</Animated.Text>
       </Animated.View>
       {props.children}
     </Animated.View>

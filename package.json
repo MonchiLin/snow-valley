@@ -29,7 +29,7 @@
   "scripts": {
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
     "prepack": "bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
@@ -63,19 +63,21 @@
     "commitlint": "^17.0.2",
     "del-cli": "^5.0.0",
     "eslint": "^8.4.1",
+    "eslint-plugin-import": "^2.27.5",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "eventemitter3": "^5.0.0",
     "jest": "^29.4.1",
+    "jest-expo": "^47.0.1",
     "lodash-es": "^4.17.21",
     "pod-install": "^0.1.0",
-    "prettier": "^2.0.5",
+    "prettier": "^2.8.3",
     "react": "18.1.0",
     "react-native": "0.70.5",
     "react-native-builder-bob": "^0.20.0",
     "react-native-reanimated": "~2.12.0",
     "release-it": "^15.0.0",
-    "typescript": "^4.5.2",
-    "jest-expo": "^47.0.1"
+    "typescript": "^4.9.5"
   },
   "resolutions": {
     "@types/react": "17.0.21"

@@ -1,10 +1,5 @@
 import { Button, Keyboard, StyleSheet, View } from 'react-native';
-import {
-  Country,
-  CountryInput,
-  PhoneNumberInput,
-  ThemeProvider,
-} from 'snow-valley';
+import { Country, CountryInput, PhoneNumberInput } from 'snow-valley';
 import { useState } from 'react';
 
 // https://emojipedia.org/flags/
@@ -21,7 +16,7 @@ const countries: Country[] = [
   },
 ];
 
-export default function App() {
+export default function SignInScreen() {
   const [country, setCountry] = useState<Country | null>(null);
   const [code, setCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -39,9 +34,9 @@ export default function App() {
 
   const onCodeChange = (e: string) => {
     if (e) {
-      const country = countries.find((c) => c.code === e);
-      if (country) {
-        setCountry(country);
+      const nextCountry = countries.find((c) => c.code === e);
+      if (nextCountry) {
+        setCountry(nextCountry);
       } else {
         setCountry(null);
       }
@@ -58,22 +53,20 @@ export default function App() {
   };
 
   return (
-    <ThemeProvider>
-      <View style={styles.container}>
-        <CountryInput country={country} />
-        <View style={{ height: 20 }} />
-        <PhoneNumberInput
-          code={code}
-          phoneNumber={phoneNumber}
-          onPhoneNumberChange={onPhoneNumberChange}
-          onCodeChange={onCodeChange}
-        />
-        <Button title={'设置中国'} onPress={onPress} />
-        <Button title={'设置 US'} onPress={onPress1} />
-        <Button title={'清除'} onPress={onPress2} />
-        <Button title={'隐藏键盘'} onPress={hiddenKeyboard} />
-      </View>
-    </ThemeProvider>
+    <View style={styles.container}>
+      <CountryInput country={country} />
+      <View style={{ height: 20 }} />
+      <PhoneNumberInput
+        code={code}
+        phoneNumber={phoneNumber}
+        onPhoneNumberChange={onPhoneNumberChange}
+        onCodeChange={onCodeChange}
+      />
+      <Button title={'设置中国'} onPress={onPress} />
+      <Button title={'设置 US'} onPress={onPress1} />
+      <Button title={'清除'} onPress={onPress2} />
+      <Button title={'隐藏键盘'} onPress={hiddenKeyboard} />
+    </View>
   );
 }
 
@@ -83,10 +76,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+    backgroundColor: 'white',
   },
 });

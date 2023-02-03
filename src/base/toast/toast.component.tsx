@@ -3,6 +3,7 @@ import { useSnowValley } from 'snow-valley';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import type { ReactNode } from 'react';
+import Animated, { FadeInLeft, FadeOutRight } from 'react-native-reanimated';
 
 const ToastRender = ({ toast }: { toast: ToastOptions }): JSX.Element => {
   return typeof toast.message === 'string' ? (
@@ -25,26 +26,26 @@ const createToastType =
 
 const ToastLevelInfo = ({ toast }: { toast: ToastOptions }) => {
   return createToastType(
-    <AntDesign name="exclamationcircle" size={14} color="#1677ff" style={{ marginRight: 10 }} />
+    <AntDesign name="exclamationcircle" size={14} color="#1677ff" className={'mr-4'} />
   )({ toast });
 };
 
 const ToastLevelSuccess = ({ toast }: { toast: ToastOptions }) => {
   return createToastType(
-    <AntDesign name="checkcircle" size={14} color="#52c41a" style={{ marginRight: 10 }} />
+    <AntDesign name="checkcircle" size={14} color="#52c41a" className={'mr-4'} />
   )({ toast });
 };
 
 const ToastLevelError = ({ toast }: { toast: ToastOptions }) => {
   return createToastType(
-    <AntDesign name="closecircle" size={14} color="#f5222d" style={{ marginRight: 10 }} />
+    <AntDesign name="closecircle" size={14} color="#f5222d" className={'mr-4'} />
   )({ toast });
 };
 
 const ToastLevelWarning = ({ toast }: { toast: ToastOptions }) => {
-  return createToastType(
-    <AntDesign name="warning" size={14} color="#faad14" style={{ marginRight: 10 }} />
-  )({ toast });
+  return createToastType(<AntDesign name="warning" size={14} color="#faad14" className={'mr-4'} />)(
+    { toast }
+  );
 };
 
 export const ToastComponent = ({ toast }: { toast: ToastOptions }) => {
@@ -79,12 +80,14 @@ export const ToastGroup = (props: {
     >
       {props.toasts.map((toast) => {
         return (
-          <View
+          <Animated.View
+            entering={FadeInLeft.duration(500)}
+            exiting={FadeOutRight.duration(500)}
             key={toast.uniqueId}
             style={[props.placement === 'top' ? { marginBottom: 10 } : { marginTop: 10 }]}
           >
             <ToastComponent toast={toast} />
-          </View>
+          </Animated.View>
         );
       })}
     </View>

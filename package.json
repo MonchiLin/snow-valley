@@ -77,7 +77,9 @@
     "react-native-builder-bob": "^0.20.0",
     "react-native-reanimated": "~2.12.0",
     "release-it": "^15.0.0",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "nativewind": "3.0.0-next.34",
+    "tailwindcss": "^3.2.4"
   },
   "resolutions": {
     "@types/react": "17.0.21"
@@ -86,7 +88,9 @@
     "@expo/vector-icons": "*",
     "react": "*",
     "react-native": "*",
-    "react-native-reanimated": "*"
+    "react-native-reanimated": "*",
+    "nativewind": "*",
+    "tailwindcss": "*"
   },
   "engines": {
     "node": ">= 16.0.0"

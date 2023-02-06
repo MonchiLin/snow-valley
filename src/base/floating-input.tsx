@@ -7,6 +7,20 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { useSnowValley } from '../context/snow-valley.context';
+import { SnowVallyTheme } from '../constants';
+
+SnowVallyTheme.injectFeature({
+  FloatingInput: {
+    focused: {
+      labelColor: '$textPrimaryColor',
+      borderColor: '$borderFocusColor',
+    },
+    unFocused: {
+      labelColor: '$textNormalColor',
+      borderColor: '$borderNormalColor',
+    },
+  },
+});
 
 export const SelectableInputSwitchView = (props: {
   children: ReactNode;
@@ -72,10 +86,10 @@ export type SelectableInputProps = {
 };
 
 export const FloatingInput = (props: SelectableInputProps) => {
-  const { component } = useSnowValley();
+  const { feature } = useSnowValley();
   const labelOffset = useSharedValue(0);
-  const containerBorderColor = useSharedValue(component.FloatingInput.unFocused.borderColor);
-  const labelColor = useSharedValue(component.FloatingInput.unFocused.labelColor);
+  const containerBorderColor = useSharedValue(feature.FloatingInput.unFocused.borderColor);
+  const labelColor = useSharedValue(feature.FloatingInput.unFocused.labelColor);
 
   const labelFontSize = useSharedValue(16);
 
@@ -100,13 +114,13 @@ export const FloatingInput = (props: SelectableInputProps) => {
   useEffect(() => {
     if (props.focused) {
       labelOffset.value = withSpring(-22, { mass: 0.3 });
-      containerBorderColor.value = component.FloatingInput.focused.borderColor;
-      labelColor.value = component.FloatingInput.focused.labelColor;
+      containerBorderColor.value = feature.FloatingInput.focused.borderColor;
+      labelColor.value = feature.FloatingInput.focused.labelColor;
       labelFontSize.value = withSpring(12, { mass: 0.3 });
     } else {
       labelOffset.value = withSpring(0, { mass: 0.3 });
-      containerBorderColor.value = component.FloatingInput.unFocused.borderColor;
-      labelColor.value = component.FloatingInput.unFocused.labelColor;
+      containerBorderColor.value = feature.FloatingInput.unFocused.borderColor;
+      labelColor.value = feature.FloatingInput.unFocused.labelColor;
       labelFontSize.value = withSpring(16, { mass: 0.3 });
     }
   }, [props.focused]);

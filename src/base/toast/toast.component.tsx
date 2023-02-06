@@ -1,10 +1,18 @@
 import type { ToastOptions } from 'snow-valley';
-import { useSnowValley } from 'snow-valley';
+import { SnowVallyTheme, useSnowValley } from 'snow-valley';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import type { ReactNode } from 'react';
 import Animated from 'react-native-reanimated';
 import { ToastAnimation } from './toast.animation';
+
+SnowVallyTheme.injectFeature({
+  Toast: {
+    zIndex: 1000,
+    duration: 2000,
+    maxCount: null,
+  },
+});
 
 const ToastRender = ({ toast }: { toast: ToastOptions }): JSX.Element => {
   return typeof toast.message === 'string' ? (
@@ -66,14 +74,14 @@ export const ToastGroupComponent = (props: {
   toasts: ToastOptions[];
   placement: ToastOptions['placement'];
 }) => {
-  const { component, safeAreaInsets } = useSnowValley();
+  const { feature, safeAreaInsets } = useSnowValley();
 
   return (
     <Animated.View
       pointerEvents="box-none"
       style={[
         styles.group,
-        { zIndex: component.Toast.zIndex },
+        { zIndex: feature.Toast.zIndex },
         props.placement === 'top'
           ? { marginTop: safeAreaInsets.top }
           : { marginBottom: safeAreaInsets.bottom },

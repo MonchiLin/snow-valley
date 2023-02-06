@@ -1,10 +1,10 @@
-import { DEFAULT_COMPONENT, DEFAULT_TOKEN } from '../constants/theme';
+import { SnowVallyTheme } from '../constants/theme';
 import { DEFAULT_SAFE_AREA_INSETS } from '../constants/safe-area';
 import { createContext, useContext } from 'react';
 
 export const SnowValleyContext = createContext({
-  token: DEFAULT_TOKEN,
-  component: DEFAULT_COMPONENT,
+  token: SnowVallyTheme.token,
+  feature: SnowVallyTheme.feature,
   safeAreaInsets: DEFAULT_SAFE_AREA_INSETS,
 });
 

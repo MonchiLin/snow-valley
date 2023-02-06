@@ -17,7 +17,7 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
     codeInput: false,
     phoneNumberInput: true,
   });
-  const { component } = useSnowValley();
+  const { feature } = useSnowValley();
 
   const onCodeChange = (value: string) => {
     if (value.length >= 3) {
@@ -42,8 +42,8 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
       label={'Phone number'}
       labelStyle={[
         _focused
-          ? { color: component.FloatingInput.focused.labelColor }
-          : { color: component.FloatingInput.unFocused.labelColor },
+          ? { color: feature.FloatingInput.focused.labelColor }
+          : { color: feature.FloatingInput.unFocused.labelColor },
       ]}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>

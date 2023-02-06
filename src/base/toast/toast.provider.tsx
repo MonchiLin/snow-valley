@@ -2,7 +2,7 @@ import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { ToastContext } from './toast.context';
 import type { ToastOptions } from './toast.types';
 import { _unsafeEventEmitter } from '../../escape-hatch/toast';
-import { ToastGroup } from './toast.component';
+import { ToastGroupComponent } from './toast.component';
 
 type Props = {
   children: ReactNode;
@@ -76,9 +76,9 @@ export const ToastProvider = ({ children, defaultOptions }: Props) => {
   return (
     <ToastContext.Provider value={{ open, destroy }}>
       {children}
-      <ToastGroup toasts={extractQueues.top} placement={'top'} />
-      <ToastGroup toasts={extractQueues.center} placement={'center'} />
-      <ToastGroup toasts={extractQueues.bottom} placement={'bottom'} />
+      <ToastGroupComponent toasts={extractQueues.top} placement={'top'} />
+      <ToastGroupComponent toasts={extractQueues.center} placement={'center'} />
+      <ToastGroupComponent toasts={extractQueues.bottom} placement={'bottom'} />
     </ToastContext.Provider>
   );
 };

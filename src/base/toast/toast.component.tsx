@@ -3,7 +3,8 @@ import { useSnowValley } from 'snow-valley';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import type { ReactNode } from 'react';
-import Animated, { FadeInLeft, FadeOutRight } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
+import { ToastAnimation } from './toast.animation';
 
 const ToastRender = ({ toast }: { toast: ToastOptions }): JSX.Element => {
   return typeof toast.message === 'string' ? (
@@ -17,7 +18,7 @@ const createToastType =
   (icon: ReactNode) =>
   ({ toast }: { toast: ToastOptions }) => {
     return (
-      <View style={styles.toastWapper}>
+      <View style={styles.toastWrapper}>
         {icon}
         <ToastRender toast={toast} />
       </View>
@@ -61,14 +62,14 @@ export const ToastComponent = ({ toast }: { toast: ToastOptions }) => {
   );
 };
 
-export const ToastGroup = (props: {
+export const ToastGroupComponent = (props: {
   toasts: ToastOptions[];
   placement: ToastOptions['placement'];
 }) => {
   const { component, safeAreaInsets } = useSnowValley();
 
   return (
-    <View
+    <Animated.View
       pointerEvents="box-none"
       style={[
         styles.group,
@@ -81,16 +82,18 @@ export const ToastGroup = (props: {
       {props.toasts.map((toast) => {
         return (
           <Animated.View
-            entering={FadeInLeft.duration(500)}
-            exiting={FadeOutRight.duration(500)}
+            entering={ToastAnimation.Entering}
+            exiting={ToastAnimation.Exiting}
             key={toast.uniqueId}
-            style={[props.placement === 'top' ? { marginBottom: 10 } : { marginTop: 10 }]}
+            style={[
+              props.placement === 'top' ? styles.toastBottomMargin : styles.toastBottomMargin,
+            ]}
           >
             <ToastComponent toast={toast} />
           </Animated.View>
         );
       })}
-    </View>
+    </Animated.View>
   );
 };
 
@@ -101,7 +104,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  toastWapper: {
+  toastTopMargin: {
+    marginTop: 10,
+  },
+  toastBottomMargin: {
+    marginBottom: 10,
+  },
+  toastWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     shadowColor: '#000',

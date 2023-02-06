@@ -1,7 +1,6 @@
-import { SnowVallyTheme } from '../constants/theme';
+import { SnowVallyTheme } from '../theme';
 import { ReactNode, useMemo, useState } from 'react';
 import { SnowValleyContext } from './snow-valley.context';
-import { ToastProvider } from '../base/toast/toast.provider';
 import { DEFAULT_SAFE_AREA_INSETS } from '../constants/safe-area';
 
 type SnowValleyProps = {
@@ -17,7 +16,7 @@ export const SnowValley = (props: SnowValleyProps) => {
   }, [props.safeAreaInsets]);
 
   // 因为主题定义中有些变量是需要动态替换的，所以这里需要做一次替换
-  // 具体参考 src/constants/theme.tsx
+  // 具体参考 src/theme.ts 中的 SnowVallyTheme.replaceComponentVariable 方法
   const _feature = useMemo(() => {
     return SnowVallyTheme.replaceComponentVariable(feature, token);
   }, [token, feature]);
@@ -26,7 +25,7 @@ export const SnowValley = (props: SnowValleyProps) => {
     <SnowValleyContext.Provider
       value={{ token: token, feature: _feature, safeAreaInsets: safeAreaInsets }}
     >
-      <ToastProvider>{props.children}</ToastProvider>
+      {props.children}
     </SnowValleyContext.Provider>
   );
 };

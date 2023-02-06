@@ -1,14 +1,20 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import { ToastContext } from './toast.context';
 import type { ToastOptions } from './toast.types';
-import { _unsafeEventEmitter } from '../../escape-hatch/toast';
+import { _unsafeToastEnabled, _unsafeToastEventEmitter } from '../../escape-hatch/toast';
 import { ToastGroupComponent } from './toast.component';
 
 type Props = {
   children: ReactNode;
   defaultOptions?: Omit<ToastOptions, 'message' | 'uniqueId'>;
+  /**
+   * 在某些情况下, 你可能需要在 React 组件之外使用 Toast (without useToast)
+   * 当然, 要先使用 ToastProvider 组件包裹你的应用
+   */
+  globalize?: boolean;
 };
-export const ToastProvider = ({ children, defaultOptions }: Props) => {
+
+export const ToastProvider = ({ children, defaultOptions, globalize = false }: Props) => {
   const [extractQueues, setExtractQueues] = useState<{
     top: ToastOptions[];
     center: ToastOptions[];
@@ -64,14 +70,21 @@ export const ToastProvider = ({ children, defaultOptions }: Props) => {
   }, []);
 
   useEffect(() => {
-    _unsafeEventEmitter.addListener('open', open);
-    _unsafeEventEmitter.addListener('destroy', destroy);
+    _unsafeToastEnabled.status = globalize;
+    if (!globalize) {
+      return () => {
+        _unsafeToastEventEmitter.removeListener('open', open);
+        _unsafeToastEventEmitter.removeListener('destroy', destroy);
+      };
+    }
+    _unsafeToastEventEmitter.addListener('open', open);
+    _unsafeToastEventEmitter.addListener('destroy', destroy);
 
     return () => {
-      _unsafeEventEmitter.removeListener('open', open);
-      _unsafeEventEmitter.removeListener('destroy', destroy);
+      _unsafeToastEventEmitter.removeListener('open', open);
+      _unsafeToastEventEmitter.removeListener('destroy', destroy);
     };
-  }, [defaultOptions, open]);
+  }, [defaultOptions, open, globalize]);
 
   return (
     <ToastContext.Provider value={{ open, destroy }}>

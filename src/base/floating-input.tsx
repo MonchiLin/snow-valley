@@ -7,7 +7,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { useSnowValley } from '../context/snow-valley.context';
-import { SnowVallyTheme } from '../constants';
+import { SnowVallyTheme } from '../theme';
 
 SnowVallyTheme.injectFeature({
   FloatingInput: {

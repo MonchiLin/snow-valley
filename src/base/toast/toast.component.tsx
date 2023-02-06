@@ -1,5 +1,6 @@
 import type { ToastOptions } from 'snow-valley';
-import { SnowVallyTheme, useSnowValley } from 'snow-valley';
+import { SnowVallyTheme } from '../../theme';
+import { useSnowValley } from '../../context/snow-valley.context';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import type { ReactNode } from 'react';

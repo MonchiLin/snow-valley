@@ -1,6 +1,7 @@
 import {
   GestureResponderEvent,
   ImageStyle,
+  LayoutChangeEvent,
   TextStyle,
   TouchableWithoutFeedback,
   View,
@@ -9,11 +10,26 @@ import {
 import SwitchStyles from './swith.styles';
 import type { SwitchProps } from './swith.types';
 import Animated, { AnimatedStyleProp, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { Bounds } from '../../shared-types';
+import { SnowVallyTheme } from '../../theme';
+import { useSnowValley } from '../../context';
+
+SnowVallyTheme.injectFeature({
+  Switch: {
+    unCheckedBackgroundColor: '$backgroundDisabledColor',
+    checkedBackgroundColor: '$backgroundPrimaryColor',
+    handler: {
+      unCheckedBackgroundColor: 'white',
+      checkedBackgroundColor: 'white',
+      unCheckedBorderColor: '$backgroundDisabledColor',
+      checkedBorderColor: '$backgroundPrimaryColor',
+    },
+  },
+});
 
 export const Switch = (props: SwitchProps) => {
-  const viewRef = useRef<View>(null);
+  const { feature } = useSnowValley();
   const viewBounds = useRef<Required<Bounds>>({
     x: 0,
     y: 0,
@@ -28,32 +44,42 @@ export const Switch = (props: SwitchProps) => {
     h: 0,
   });
 
-  useLayoutEffect(() => {
-    viewRef.current!.measure((x: number, y: number, width: number, height: number) => {
-      viewBounds.current = {
-        x,
-        y,
-        w: width,
-        h: height,
-      };
-    });
+  const onViewLayout = useCallback((event: LayoutChangeEvent) => {
+    viewBounds.current = {
+      x: event.nativeEvent.layout.x,
+      y: event.nativeEvent.layout.y,
+      w: event.nativeEvent.layout.width,
+      h: event.nativeEvent.layout.height,
+    };
+  }, []);
+
+  const onHandlerLayout = useCallback((event: LayoutChangeEvent) => {
+    handlerBounds.current = {
+      x: event.nativeEvent.layout.x,
+      y: event.nativeEvent.layout.y,
+      w: event.nativeEvent.layout.width,
+      h: event.nativeEvent.layout.height,
+    };
   }, []);
 
   const onChange = (event: GestureResponderEvent) => {
     setChecked(!checked);
     props.onChange?.(!checked, event);
   };
+
   const [checked, setChecked] = useState(false);
 
   const handlerStyle = useAnimatedStyle(() => {
+    const translateX = checked
+      ? -handlerBounds.current.w / 2
+      : viewBounds.current.w - handlerBounds.current.w / 2;
+
     return {
       transform: [
         {
-          translateX: withSpring(
-            checked
-              ? -handlerBounds.current.w / 2
-              : viewBounds.current.w + -handlerBounds.current.w * 1.5
-          ),
+          translateX: withSpring(translateX, {
+            damping: 20,
+          }),
         },
       ],
     } as AnimatedStyleProp<ViewStyle | ImageStyle | TextStyle>;
@@ -61,9 +87,32 @@ export const Switch = (props: SwitchProps) => {
 
   return (
     <TouchableWithoutFeedback onPress={onChange}>
-      <View ref={viewRef} style={SwitchStyles.switch}>
-        <Animated.View style={[SwitchStyles.inner]} />
-        <Animated.View style={[SwitchStyles.handler, handlerStyle]} />
+      <View style={SwitchStyles.switch} onLayout={onViewLayout}>
+        <Animated.View
+          style={[
+            SwitchStyles.inner,
+            {
+              backgroundColor: checked
+                ? feature.Switch.checkedBackgroundColor
+                : feature.Switch.unCheckedBackgroundColor,
+            },
+          ]}
+        />
+        <Animated.View
+          onLayout={onHandlerLayout}
+          style={[
+            SwitchStyles.handler,
+            handlerStyle,
+            {
+              backgroundColor: checked
+                ? feature.Switch.handler.checkedBackgroundColor
+                : feature.Switch.handler.unCheckedBackgroundColor,
+              borderColor: checked
+                ? feature.Switch.handler.checkedBorderColor
+                : feature.Switch.handler.unCheckedBorderColor,
+            },
+          ]}
+        />
       </View>
     </TouchableWithoutFeedback>
   );

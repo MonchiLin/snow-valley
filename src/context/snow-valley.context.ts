@@ -1,4 +1,4 @@
-import { SnowVallyTheme } from '../constants/theme';
+import { SnowVallyTheme } from '../theme';
 import { DEFAULT_SAFE_AREA_INSETS } from '../constants/safe-area';
 import { createContext, useContext } from 'react';
 

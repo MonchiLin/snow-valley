@@ -1,4 +1,4 @@
-import { SnowVallyTheme } from '../constants/theme';
+import { SnowVallyTheme } from '../theme';
 
 describe('SnowVallyTheme', () => {
   it('Should extend `The Token Object` while compiling', () => {

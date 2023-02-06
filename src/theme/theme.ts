@@ -8,6 +8,8 @@ export namespace SnowVallyTheme {
     textNormalColor: '#A8A8A8',
     borderFocusColor: '#DBDBDB',
     borderNormalColor: '#64A0E8',
+    backgroundPrimaryColor: '#53ade9',
+    backgroundDisabledColor: '#b0b5b9',
   };
 
   export const injectToken = (anyObject: DeepPartial<SnowVallyThemeStatic.Token>) => {

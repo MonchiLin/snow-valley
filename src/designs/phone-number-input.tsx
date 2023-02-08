@@ -2,6 +2,7 @@ import { Text, TextInput, View } from 'react-native';
 import { FloatingInput } from '../base/floating-input';
 import { useRef, useState } from 'react';
 import { useSnowValley } from '../context/snow-valley.context';
+import { TextInputVirtualKeyboard } from './virtual-keyboard';
 
 export type PhoneNumberInputProps = {
   code: string;
@@ -48,7 +49,7 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text>+</Text>
-        <TextInput
+        <TextInputVirtualKeyboard
           keyboardType={'number-pad'}
           style={{ minWidth: 60, paddingLeft: 5 }}
           ref={codeInputRef}
@@ -63,7 +64,8 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
       <View style={{ marginHorizontal: 8 }}>
         <Text>|</Text>
       </View>
-      <TextInput
+      <TextInputVirtualKeyboard
+        showSoftInputOnFocus={false}
         placeholder={'Phone number'}
         style={{ flex: 1 }}
         ref={phoneNumberInputRef}

@@ -1,20 +1,22 @@
 import { Button, Keyboard, StyleSheet, View } from 'react-native';
-import { Country, CountryInput, PhoneNumberInput } from 'snow-valley';
+import { Country, CountryGroup, CountryInput, PhoneNumberInput } from 'snow-valley';
 import { useState } from 'react';
 
 // https://emojipedia.org/flags/
-const countries: Country[] = [
-  {
+const countries = new CountryGroup([
+  new Country({
     name: 'Chinese mainland',
     code: '86',
     flag: '🇨🇳',
-  },
-  {
+    placeholder: '000 0000 000',
+  }),
+  new Country({
     name: 'United States',
     code: '1',
     flag: '🇺🇸',
-  },
-];
+    placeholder: '000 000 0000',
+  }),
+]);
 
 export default function SignInScreen() {
   const [country, setCountry] = useState<Country | null>(null);
@@ -22,19 +24,20 @@ export default function SignInScreen() {
   const [phoneNumber, setPhoneNumber] = useState('');
 
   const onPress = () => {
-    setCountry(countries[0]!);
+    setCountry(countries.indexOf(0)!);
   };
   const onPress1 = () => {
-    setCountry(countries[1]!);
+    setCountry(countries.indexOf(1)!);
   };
 
   const onPress2 = () => {
     setCountry(null);
+    setCode('');
   };
 
   const onCodeChange = (e: string) => {
     if (e) {
-      const nextCountry = countries.find((c) => c.code === e);
+      const nextCountry = countries.findCountryByCode(e);
       if (nextCountry) {
         setCountry(nextCountry);
       } else {
@@ -77,5 +80,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     backgroundColor: 'white',
+    position: 'relative',
   },
 });

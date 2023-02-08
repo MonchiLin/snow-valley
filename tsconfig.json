@@ -4,6 +4,7 @@
     "paths": {
       "snow-valley": ["./src/index"]
     },
+    "importHelpers": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,

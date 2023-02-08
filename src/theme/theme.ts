@@ -6,8 +6,8 @@ export namespace SnowVallyTheme {
   export const token: SnowVallyThemeStatic.Token = {
     textPrimaryColor: '#64A0E8',
     textNormalColor: '#A8A8A8',
-    borderFocusColor: '#DBDBDB',
-    borderNormalColor: '#64A0E8',
+    borderFocusColor: '#64A0E8',
+    borderNormalColor: '#DBDBDB',
     backgroundPrimaryColor: '#53ade9',
     backgroundDisabledColor: '#b0b5b9',
   };

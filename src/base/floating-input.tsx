@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     borderStyle: 'solid',
-    borderWidth: 1,
+    borderWidth: 2,
     paddingHorizontal: 8,
     borderRadius: 8,
     position: 'relative',

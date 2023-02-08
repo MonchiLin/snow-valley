@@ -65,7 +65,7 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
         <Text>|</Text>
       </View>
       <TextInputVirtualKeyboard
-        showSoftInputOnFocus={false}
+        keyboardType={'decimal-pad'}
         placeholder={'Phone number'}
         style={{ flex: 1 }}
         ref={phoneNumberInputRef}

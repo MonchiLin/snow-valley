@@ -1,6 +1,7 @@
 import {
   ImageStyle,
   Text,
+  TextInputProps,
   TextStyle,
   TouchableOpacity,
   useWindowDimensions,
@@ -9,7 +10,7 @@ import {
 } from 'react-native';
 import { useCallback, useEffect, useRef } from 'react';
 import VirtualKeyboardStyle from './virtual-keyboard.style';
-import { useSnowValley } from '../../context';
+import { useSnowValley } from '../../context/snow-valley.context';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { AnimatedStyleProp, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Portal } from '@gorhom/portal';
@@ -32,9 +33,17 @@ const numericGroup = [
   ],
 ];
 
-function VirtualNumericButton(props: { number: number; hint: string }) {
+function VirtualNumericButton(props: {
+  number: number | string;
+  hint: string;
+  onPress: (key: string) => void;
+}) {
   return (
-    <TouchableOpacity activeOpacity={0.6} style={VirtualKeyboardStyle.VirtualNumericButton}>
+    <TouchableOpacity
+      onPress={() => props.onPress(props.number.toString())}
+      activeOpacity={0.6}
+      style={VirtualKeyboardStyle.VirtualNumericButton}
+    >
       <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupNumber}>{props.number}</Text>
       <View style={{ paddingLeft: 20 }}>
         <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupHit}>{props.hint}</Text>
@@ -43,14 +52,19 @@ function VirtualNumericButton(props: { number: number; hint: string }) {
   );
 }
 
-function VirtualNumericButtonGroup() {
+function VirtualNumericButtonGroup(props: { onPress: (key: string) => void }) {
   return (
     <View style={VirtualKeyboardStyle.VirtualNumericButtonGroup}>
       {numericGroup.map((col, index) => {
         return (
           <View style={VirtualKeyboardStyle.VirtualNumericButtonGroupRow} key={index}>
             {col.map((row) => (
-              <VirtualNumericButton key={row.number} number={row.number} hint={row.hit} />
+              <VirtualNumericButton
+                onPress={props.onPress}
+                key={row.number}
+                number={row.number}
+                hint={row.hit}
+              />
             ))}
           </View>
         );
@@ -59,21 +73,32 @@ function VirtualNumericButtonGroup() {
   );
 }
 
-export type VirtualNumericKeyboardProps = {
-  visible: boolean;
-  onVisibleChanged: (newState: boolean) => void;
+export type VirtualKeyboardStateLessProps = {
+  // 点击退格
+  onBackspacePress: () => void;
+  // 点击数字
+  onKeyPress: (key: string) => void;
+  // 点击小数点
+  onDotPress: () => void;
+  // 是否输入小数
+  keyboardType: TextInputProps['keyboardType'];
 };
 
-function VirtualKeyboardComponent() {
+function VirtualKeyboardStateLess(props: VirtualKeyboardStateLessProps) {
   return (
     <View>
-      <VirtualNumericButtonGroup />
+      <VirtualNumericButtonGroup onPress={props.onKeyPress} />
       <View style={[VirtualKeyboardStyle.VirtualNumericBottomGroup]}>
-        <View
-          style={[VirtualKeyboardStyle.VirtualNumericButton, { backgroundColor: 'transparent' }]}
-        />
-        <VirtualNumericButton number={0} hint={'+'} />
+        {props.keyboardType !== 'decimal-pad' ? (
+          <View
+            style={[VirtualKeyboardStyle.VirtualNumericButton, { backgroundColor: 'transparent' }]}
+          />
+        ) : (
+          <VirtualNumericButton onPress={props.onDotPress} number={'.'} hint={'+'} />
+        )}
+        <VirtualNumericButton onPress={props.onKeyPress} number={0} hint={'+'} />
         <TouchableOpacity
+          onPress={props.onBackspacePress}
           activeOpacity={0.6}
           style={[VirtualKeyboardStyle.VirtualNumericButton, { justifyContent: 'center' }]}
         >
@@ -84,7 +109,12 @@ function VirtualKeyboardComponent() {
   );
 }
 
-export function VirtualNumericKeyboard(props: VirtualNumericKeyboardProps) {
+export type VirtualNumericKeyboardProps = {
+  visible: boolean;
+  onVisibleChanged: (newState: boolean) => void;
+} & VirtualKeyboardStateLessProps;
+
+export function VirtualNumericKeyboardStateFull(props: VirtualNumericKeyboardProps) {
   const { safeAreaInsets } = useSnowValley();
   const viewRef = useRef<Animated.View>(null);
   const keyboardHeightEffect = useRef({
@@ -99,7 +129,7 @@ export function VirtualNumericKeyboard(props: VirtualNumericKeyboardProps) {
           translateY: withSpring(
             props.visible ? 0 : keyboardHeightEffect.current.height,
             {
-              damping: 30,
+              damping: 15,
             },
             (isFinished) => {
               if (isFinished) {
@@ -134,7 +164,12 @@ export function VirtualNumericKeyboard(props: VirtualNumericKeyboardProps) {
           rootAnimatedStyle,
         ]}
       >
-        <VirtualKeyboardComponent />
+        <VirtualKeyboardStateLess
+          onBackspacePress={props.onBackspacePress}
+          onDotPress={props.onDotPress}
+          onKeyPress={props.onKeyPress}
+          keyboardType={props.keyboardType}
+        />
       </Animated.View>
     </Portal>
   );

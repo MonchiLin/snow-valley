@@ -1,9 +1,4 @@
-import type {
-  NativeSyntheticEvent,
-  TextInput,
-  TextInputFocusEventData,
-  TextInputProps,
-} from 'react-native';
+import type { TextInput, TextInputProps } from 'react-native';
 import type { ComponentType, RefAttributes } from 'react';
 import * as React from 'react';
 import { forwardRef } from 'react';
@@ -20,27 +15,9 @@ type TheDuckNamedTextInput = ComponentType<TextInputProps & RefAttributes<TextIn
 export type VirtualKeyboardHOCProps = {} & TextInputProps;
 
 export function VirtualKeyboardHOC(Component: TheDuckNamedTextInput) {
-  return forwardRef<TextInput, VirtualKeyboardHOCProps>(function (props, ref) {
-    const virtualKeyboard = useVirtualKeyboard();
+  return forwardRef<TextInput, VirtualKeyboardHOCProps>((props, ref) => {
+    const virtualKeyboard = useVirtualKeyboard(props, ref);
 
-    const onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      props.onFocus?.(e);
-      virtualKeyboard.show();
-    };
-
-    const onBlur = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-      props.onBlur?.(e);
-      virtualKeyboard.hide();
-    };
-
-    return (
-      <Component
-        {...props}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        showSoftInputOnFocus={false}
-        ref={ref}
-      />
-    );
+    return <Component {...props} {...virtualKeyboard.textInputProps} />;
   });
 }

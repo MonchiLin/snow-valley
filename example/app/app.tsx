@@ -7,6 +7,7 @@ import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-cont
 import React from 'react';
 import SwitchScreen from './switch.screen';
 import { PortalProvider } from '@gorhom/portal';
+import VirtualKeyboardScreen from './virtual-keyboard.screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ function Navigation() {
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Toast" component={ToastScreen} />
           <Stack.Screen name="Switch" component={SwitchScreen} />
+          <Stack.Screen name="VirtualKeyboard" component={VirtualKeyboardScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SnowValley>

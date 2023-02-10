@@ -5,7 +5,7 @@
 和其他组件库不同的是, `snow-valley-ui` 主要开发并不是基础组件, 而是特性组件, 所以它不会提供诸如 `Input`, `Form` 等基础组件, 而是提供特性组件, 例如 `虚拟数字键盘`, `Toast`, `FloatingInput` 等.
 
 ## 特性
-[x] `Tree Sheking 友好` 与基础组件库不同, 你不必对 `组件库` 的概念产生恐惧, `snow-valley-ui` 的所有代码都是遵循 `ESM`, 除去大约 10kb 的基础代码, 其余代码仅会被引用后打包进你的项目中, 所以你不必担心 `snow-valley-ui` 会让你的项目变得臃肿.
+[x] `Tree Sheking 友好` 与基础组件库不同, 你不必对 `组件库` 的概念产生恐惧, `snow-valley-ui` 的所有代码都是遵循 `ESM`, 除去大约 10kb 的基础代码, 其余代码仅会被引用后才会被打包, 所以你不必担心 `snow-valley-ui` 会让你的项目变得臃肿.
 [x] `Motion first`, 所有的特性组件均提供流畅, 美丽, 令人舒适的动画过渡效果, powered by `react-native-reanimated`
 [x] Expo 开箱即用
 [x] TypeScript 支持
@@ -63,7 +63,7 @@ Ok, 现在你可以探索 `snow-valley-ui` 的所有特性了.
 
 在 React 中我们一般使用 `Portal` 组件来将组件渲染到 DOM 树之外的地方, 但是在 React Native 中我们并没有这样的组件, 所以我们需要使用 `@gorhom/portal` 这个库来实现这个功能.
 
-### `@gorhom/portal` 是可选的
+#### `@gorhom/portal` 是可选的
 
 如果你是一个有强迫症的开发者, 那么你可能会在意 `@gorhom/portal` 被哪些组件所依赖, 如果不使用依赖 `@gorhom/portal` 的组件则不需要安装 `@gorhom/portal`.
 
@@ -74,6 +74,6 @@ Ok, 现在你可以探索 `snow-valley-ui` 的所有特性了.
 
 ### 客制化支持
 
-正如开头所说, `snow-valley-ui` 是一个特性组件库, 它的主题设计主要参考于 `Telegram`, 所以能够进行客制化的部分较少, 好在 `snow-valley-ui` 所有组件的开发都是以独立为主的, 所以你可以很容易的将 `snow-valley-ui` 中的组件复制出来进行修改, 然后在你的项目中使用, 如果你认为你所修改的组件可以被其他人使用, 你可以在 `snow-valley-ui` 的 `github` 仓库中提交 `PR`.
+正如开头所说, `snow-valley-ui` 是一个特性组件库, 它的主题设计/交互逻辑/动画效果主要参考于 `Telegram`, 所以能够进行客制化的部分较少, 好在 `snow-valley-ui` 所有组件的开发目标都是保持代码独立, 所以你可以很容易的将 `snow-valley-ui` 中的组件复制出来进行修改, 然后在你的项目中使用, 如果你认为你所修改的组件可以被其他人使用, 你可以在 `snow-valley-ui` 的 `github` 仓库中提交 `PR`.
 
 

@@ -14,6 +14,11 @@ type TheDuckNamedTextInput = ComponentType<TextInputProps & RefAttributes<TextIn
  */
 export type VirtualKeyboardHOCProps = {} & TextInputProps;
 
+/**
+ * 如何确定当前的 TextInput
+ *
+ */
+
 export function VirtualKeyboardHOC(Component: TheDuckNamedTextInput) {
   return forwardRef<TextInput, VirtualKeyboardHOCProps>((props, ref) => {
     const virtualKeyboard = useVirtualKeyboard(props, ref);

@@ -1,7 +1,7 @@
 import type { TextInput, TextInputProps } from 'react-native';
 import type { ComponentType, RefAttributes } from 'react';
 import * as React from 'react';
-import { forwardRef } from 'react';
+import { forwardRef, useId } from 'react';
 import { useVirtualKeyboard } from './virtual-keyboard.context';
 
 type TheDuckNamedTextInput = ComponentType<TextInputProps & RefAttributes<TextInput>>;
@@ -21,8 +21,9 @@ export type VirtualKeyboardHOCProps = {} & TextInputProps;
 
 export function VirtualKeyboardHOC(Component: TheDuckNamedTextInput) {
   return forwardRef<TextInput, VirtualKeyboardHOCProps>((props, ref) => {
-    const virtualKeyboard = useVirtualKeyboard(props, ref);
+    const id = useId();
+    const virtualKeyboard = useVirtualKeyboard();
 
-    return <Component {...props} {...virtualKeyboard.textInputProps} />;
+    return <Component {...virtualKeyboard.proxyingProps(props, ref, id)} />;
   });
 }

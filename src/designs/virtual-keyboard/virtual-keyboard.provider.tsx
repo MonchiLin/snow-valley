@@ -1,7 +1,7 @@
 import {
   ForwardedRef,
-  MutableRefObject,
   PropsWithChildren,
+  RefAttributes,
   useCallback,
   useEffect,
   useRef,
@@ -16,55 +16,44 @@ import type {
   TextInputFocusEventData,
   TextInputProps,
 } from 'react-native';
-import type { VirtualKeyboardContextType } from './virtual-keyboard.types';
 import { isInteger, isNumberAllowDotEnd } from '../../utilities/regex';
 
 export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
   const [visible, setVisible] = useState(false);
   const keyboard = useKeyboard();
-  // 被引用的 TextInput
-  const textRef = useRef<TextInput | null>(null);
-  const proxyedProps = useRef<Map<ForwardedRef<TextInput>, { props: TextInputProps }> | null>(
-    new Map()
+  const proxyedPropses = useRef(
+    new Map<
+      string,
+      {
+        proxyedProps: TextInputProps & RefAttributes<TextInput>;
+        ref: { current: TextInput | null };
+      }
+    >()
   );
-  const currentProxyedProps = useRef<{
-    ref: ForwardedRef<TextInput | null>;
-    forwardRef: ForwardedRef<TextInput | null>;
-    props: TextInputProps;
-  } | null>({
-    ref: null,
-    forwardRef: null,
-    props: {},
-  });
+
+  const currentProxyedProps = useRef<
+    | {
+        ref: { current: TextInput | null };
+        proxyedProps: TextInputProps & RefAttributes<TextInput>;
+      }
+    | undefined
+  >(undefined);
 
   useEffect(() => {
     return () => {
-      // 销毁 proxyedProps
-      proxyedProps.current = null;
+      // 销毁 proxyedPropses
+      proxyedPropses.current = new Map();
       // 销毁当前的 currentProxyedProps
-      currentProxyedProps.current = null;
+      currentProxyedProps.current = undefined;
     };
   }, []);
 
   const updateCurrentTextInput = useCallback(() => {
-    if (!proxyedProps.current) {
-      currentProxyedProps.current = null;
-    } else {
-      // 从 proxyedProps 中找到正在聚焦的 TextInput
-      const items = Array.from(proxyedProps.current!.entries());
-      const item = items.find(([ref]) => {
-        return (ref as MutableRefObject<TextInput>).current === textRef.current;
-      });
-      if (item) {
-        currentProxyedProps.current = {
-          forwardRef: item[0],
-          props: item[1].props,
-          ref: null,
-        };
-      } else {
-        currentProxyedProps.current = null;
-      }
-    }
+    // 从 proxyedPropses 中找到正在聚焦的 TextInput
+    const items = Array.from(proxyedPropses.current!.values());
+    currentProxyedProps.current = items.find(({ ref }) => {
+      return ref!.current!.isFocused();
+    });
   }, []);
 
   const onVisibleChanged = (newVisible: boolean) => {
@@ -81,7 +70,8 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
   };
 
   const onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    currentProxyedProps.current!.props.onFocus?.(e);
+    updateCurrentTextInput();
+    currentProxyedProps.current!.proxyedProps.onFocus?.(e);
     open();
   };
 
@@ -90,7 +80,8 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
   }, []);
 
   const onBlur = useCallback((e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    currentProxyedProps.current!.props.onBlur?.(e);
+    updateCurrentTextInput();
+    currentProxyedProps.current!.proxyedProps.onBlur?.(e);
     dismiss();
   }, []);
 
@@ -98,7 +89,7 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
 
   const onChangeText = useCallback((text: string) => {
     if (text !== '') {
-      if (currentProxyedProps.current!.props.keyboardType === 'decimal-pad') {
+      if (currentProxyedProps.current!.proxyedProps.keyboardType === 'decimal-pad') {
         if (!isNumberAllowDotEnd(text)) {
           return;
         }
@@ -108,7 +99,7 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
         }
       }
     }
-    currentProxyedProps.current!.props.onChangeText?.(text);
+    currentProxyedProps.current!.proxyedProps.onChangeText?.(text);
     setValue(text);
   }, []);
 
@@ -131,40 +122,46 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
   };
 
   // 代理传入 textInput 的原始 props
-  const proxyingProps = (originProps: TextInputProps, ref?: ForwardedRef<TextInput>) => {
+  const proxyingProps = (
+    originProps: TextInputProps,
+    originRef: ForwardedRef<TextInput> | undefined,
+    id: string
+  ): TextInputProps & RefAttributes<TextInput> => {
     setValue(originProps.value ?? '');
-    proxyedProps.current!.set(ref!, { props: originProps });
-    updateCurrentTextInput();
-  };
+    const refMock: { current: TextInput | null } = { current: null };
 
-  const textInputProps: VirtualKeyboardContextType['textInputProps'] = {
-    value,
-    onChangeText,
-    onFocus: onFocus,
-    onBlur: onBlur,
-    showSoftInputOnFocus: false,
-    ref: (ref: TextInput) => {
-      if (currentProxyedProps.current?.ref) {
-        if (typeof currentProxyedProps.current!.ref === 'function') {
-          currentProxyedProps.current!.ref(ref);
-        } else {
-          currentProxyedProps.current!.ref!.current = ref;
+    const textInputProps: TextInputProps & RefAttributes<TextInput> = {
+      value,
+      onChangeText,
+      onFocus: onFocus,
+      onBlur: onBlur,
+      showSoftInputOnFocus: false,
+      ref: (_ref: TextInput | null) => {
+        refMock.current = _ref;
+        if (originRef) {
+          if (typeof originRef === 'function') {
+            originRef(_ref);
+          } else {
+            originRef!.current = _ref;
+          }
         }
-      }
-      textRef.current = ref;
-    },
+      },
+    };
+
+    proxyedPropses.current!.set(id, { proxyedProps: originProps, ref: refMock });
+    return textInputProps;
   };
 
   return (
     <VirtualKeyboardContext.Provider
-      value={{ visible, open: open, dismiss: dismiss, proxyingProps, textInputProps }}
+      value={{ visible, open: open, dismiss: dismiss, proxyingProps }}
     >
       {props.children}
       <VirtualNumericKeyboardStateFull
         onBackspacePress={onBackspacePress}
         onDotPress={onDotPress}
         onKeyPress={onKeyPress}
-        keyboardType={currentProxyedProps.current?.props?.keyboardType}
+        keyboardType={currentProxyedProps.current?.proxyedProps?.keyboardType}
         visible={visible}
         onVisibleChanged={onVisibleChanged}
       />

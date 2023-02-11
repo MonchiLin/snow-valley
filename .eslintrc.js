@@ -14,6 +14,7 @@ module.exports = {
         trailingComma: 'es5',
         useTabs: false,
         printWidth: 100,
+        endOfLine: 'auto',
       },
     ],
   },

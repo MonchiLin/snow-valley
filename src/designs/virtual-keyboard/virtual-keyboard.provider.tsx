@@ -10,14 +10,11 @@ import {
 import { VirtualKeyboardContext } from './virtual-keyboard.context';
 import { VirtualNumericKeyboardStateFull } from './virtual-keyboard';
 import { useKeyboard } from '../../hooks/use-keyboard';
-import type {
-  NativeSyntheticEvent,
-  TextInput,
-  TextInputFocusEventData,
-  TextInputProps,
-} from 'react-native';
+import type { TextInput, TextInputProps } from 'react-native';
+import { Platform } from 'react-native';
 import { isInteger, isNumberAllowDotEnd } from '../../utilities/regex';
 
+const isAndroid = Platform.OS === 'android';
 export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
   const [visible, setVisible] = useState(false);
   const keyboard = useKeyboard();
@@ -33,8 +30,9 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
 
   const currentProxyedProps = useRef<
     | {
-        ref: { current: TextInput | null };
+        ref: TextInput | null;
         proxyedProps: TextInputProps & RefAttributes<TextInput>;
+        uid: string;
       }
     | undefined
   >(undefined);
@@ -46,14 +44,6 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
       // 销毁当前的 currentProxyedProps
       currentProxyedProps.current = undefined;
     };
-  }, []);
-
-  const updateCurrentTextInput = useCallback(() => {
-    // 从 proxyedPropses 中找到正在聚焦的 TextInput
-    const items = Array.from(proxyedPropses.current!.values());
-    currentProxyedProps.current = items.find(({ ref }) => {
-      return ref!.current!.isFocused();
-    });
   }, []);
 
   const onVisibleChanged = (newVisible: boolean) => {
@@ -69,23 +59,16 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
     }
   };
 
-  const onFocus = (e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    updateCurrentTextInput();
-    currentProxyedProps.current!.proxyedProps.onFocus?.(e);
-    open();
-  };
-
   const dismiss = useCallback(() => {
     setVisible(false);
   }, []);
 
-  const onBlur = useCallback((e: NativeSyntheticEvent<TextInputFocusEventData>) => {
-    updateCurrentTextInput();
-    currentProxyedProps.current!.proxyedProps.onBlur?.(e);
-    dismiss();
+  const getCurrentValue = useCallback(() => {
+    if (!currentProxyedProps.current) {
+      return '';
+    }
+    return currentProxyedProps.current?.proxyedProps.value ?? '';
   }, []);
-
-  const [value, setValue] = useState('');
 
   const onChangeText = useCallback((text: string) => {
     if (text !== '') {
@@ -100,10 +83,10 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
       }
     }
     currentProxyedProps.current!.proxyedProps.onChangeText?.(text);
-    setValue(text);
   }, []);
 
   const onBackspacePress = () => {
+    const value = getCurrentValue();
     const text = value.slice(0, value.length - 1);
     onChangeText(text);
   };
@@ -112,11 +95,13 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
    * 点击 . 按钮
    */
   const onDotPress = () => {
+    const value = getCurrentValue();
     const text = value + '.';
     onChangeText(text);
   };
 
   const onKeyPress = (key: string) => {
+    const value = getCurrentValue();
     const text = value + key;
     onChangeText(text);
   };
@@ -127,14 +112,31 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
     originRef: ForwardedRef<TextInput> | undefined,
     id: string
   ): TextInputProps & RefAttributes<TextInput> => {
-    setValue(originProps.value ?? '');
     const refMock: { current: TextInput | null } = { current: null };
 
+    if (currentProxyedProps.current && currentProxyedProps.current!.uid === id) {
+      currentProxyedProps.current!.proxyedProps.value = originProps.value;
+    }
+
     const textInputProps: TextInputProps & RefAttributes<TextInput> = {
-      value,
-      onChangeText,
-      onFocus: onFocus,
-      onBlur: onBlur,
+      ...originProps,
+      onFocus: (e) => {
+        currentProxyedProps.current = {
+          proxyedProps: textInputProps,
+          ref: refMock.current,
+          uid: id,
+        };
+        if (isAndroid) {
+          keyboard.dismiss();
+        }
+        originProps.onFocus?.(e);
+        open();
+      },
+      onBlur: (e) => {
+        currentProxyedProps.current = undefined;
+        originProps.onBlur?.(e);
+        dismiss();
+      },
       showSoftInputOnFocus: false,
       ref: (_ref: TextInput | null) => {
         refMock.current = _ref;

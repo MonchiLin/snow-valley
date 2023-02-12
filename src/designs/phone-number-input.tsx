@@ -39,7 +39,7 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
 
   return (
     <FloatingInput
-      focused={_focused}
+      focused={true}
       label={'Phone number'}
       labelStyle={[
         _focused

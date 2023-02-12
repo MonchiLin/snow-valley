@@ -16,6 +16,12 @@ const countries = new CountryGroup([
     flag: '🇺🇸',
     placeholder: '000 000 0000',
   }),
+  new Country({
+    name: 'Chinese mainland',
+    code: '12',
+    flag: '🇨🇳',
+    placeholder: '000 0000 000',
+  }),
 ]);
 
 export default function SignInScreen() {
@@ -43,6 +49,8 @@ export default function SignInScreen() {
       } else {
         setCountry(null);
       }
+    } else {
+      setCountry(null);
     }
     setCode(e);
   };
@@ -69,6 +77,7 @@ export default function SignInScreen() {
       <Button title={'设置 US'} onPress={onPress1} />
       <Button title={'清除'} onPress={onPress2} />
       <Button title={'隐藏键盘'} onPress={hiddenKeyboard} />
+      <View style={{ height: 50 }} />
     </View>
   );
 }

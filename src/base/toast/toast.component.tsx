@@ -7,7 +7,7 @@ import type { ReactNode } from 'react';
 import Animated from 'react-native-reanimated';
 import { ToastAnimation } from './toast.animation';
 
-SnowVallyTheme.injectFeature({
+SnowVallyTheme.injectAComponentToken({
   Toast: {
     zIndex: 1000,
     duration: 2000,
@@ -75,14 +75,14 @@ export const ToastGroupComponent = (props: {
   toasts: ToastOptions[];
   placement: ToastOptions['placement'];
 }) => {
-  const { feature, safeAreaInsets } = useSnowValley();
+  const { componentTokens, safeAreaInsets } = useSnowValley();
 
   return (
     <Animated.View
       pointerEvents="box-none"
       style={[
         styles.group,
-        { zIndex: feature.Toast.zIndex },
+        { zIndex: componentTokens.Toast.zIndex },
         props.placement === 'top'
           ? { marginTop: safeAreaInsets.top }
           : { marginBottom: safeAreaInsets.bottom },

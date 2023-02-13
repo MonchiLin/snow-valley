@@ -15,7 +15,7 @@ import type { Bounds } from '../../shared-types';
 import { SnowVallyTheme } from '../../theme';
 import { useSnowValley } from '../../context';
 
-SnowVallyTheme.injectFeature({
+SnowVallyTheme.injectAComponentToken({
   Switch: {
     unCheckedBackgroundColor: '$backgroundDisabledColor',
     checkedBackgroundColor: '$backgroundPrimaryColor',
@@ -29,7 +29,7 @@ SnowVallyTheme.injectFeature({
 });
 
 export const Switch = (props: SwitchProps) => {
-  const { feature } = useSnowValley();
+  const { componentTokens } = useSnowValley();
   const viewBounds = useRef<Required<Bounds>>({
     x: 0,
     y: 0,
@@ -93,8 +93,8 @@ export const Switch = (props: SwitchProps) => {
             SwitchStyles.inner,
             {
               backgroundColor: checked
-                ? feature.Switch.checkedBackgroundColor
-                : feature.Switch.unCheckedBackgroundColor,
+                ? componentTokens.Switch.checkedBackgroundColor
+                : componentTokens.Switch.unCheckedBackgroundColor,
             },
           ]}
         />
@@ -105,11 +105,11 @@ export const Switch = (props: SwitchProps) => {
             handlerStyle,
             {
               backgroundColor: checked
-                ? feature.Switch.handler.checkedBackgroundColor
-                : feature.Switch.handler.unCheckedBackgroundColor,
+                ? componentTokens.Switch.handler.checkedBackgroundColor
+                : componentTokens.Switch.handler.unCheckedBackgroundColor,
               borderColor: checked
-                ? feature.Switch.handler.checkedBorderColor
-                : feature.Switch.handler.unCheckedBorderColor,
+                ? componentTokens.Switch.handler.checkedBorderColor
+                : componentTokens.Switch.handler.unCheckedBorderColor,
             },
           ]}
         />

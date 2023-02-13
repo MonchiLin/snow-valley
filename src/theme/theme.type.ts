@@ -1,24 +1,29 @@
 export declare namespace SnowVallyThemeStatic {
+  interface PaletteColor {
+    light: string;
+    dark: string;
+  }
+
   export type Token = {
-    textPrimaryColor: string;
-    textNormalColor: string;
-    borderFocusColor: string;
-    borderNormalColor: string;
-    backgroundPrimaryColor: string;
-    backgroundDisabledColor: string;
+    textPrimaryColor: PaletteColor;
+    textNormalColor: PaletteColor;
+    borderFocusColor: PaletteColor;
+    borderNormalColor: PaletteColor;
+    backgroundPrimaryColor: PaletteColor;
+    backgroundDisabledColor: PaletteColor;
   };
+  type WithDollar = { [key in keyof Token]: `$${key}` };
+  type ColorValue = WithDollar[keyof WithDollar] | string;
 
-  type ColorValue = keyof Token;
-
-  export type Feature = {
+  export type ComponentToken = {
     FloatingInput: {
       focused: {
-        labelColor: string;
-        borderColor: string;
+        labelColor: ColorValue;
+        borderColor: ColorValue;
       };
       unFocused: {
-        labelColor: string;
-        borderColor: string;
+        labelColor: ColorValue;
+        borderColor: ColorValue;
       };
     };
     Toast: {
@@ -27,13 +32,13 @@ export declare namespace SnowVallyThemeStatic {
       maxCount: null | number;
     };
     Switch: {
-      unCheckedBackgroundColor: string;
-      checkedBackgroundColor: string;
+      unCheckedBackgroundColor: ColorValue;
+      checkedBackgroundColor: ColorValue;
       handler: {
-        unCheckedBackgroundColor: string;
-        checkedBackgroundColor: string;
-        unCheckedBorderColor: string;
-        checkedBorderColor: string;
+        unCheckedBackgroundColor: ColorValue;
+        checkedBackgroundColor: ColorValue;
+        unCheckedBorderColor: ColorValue;
+        checkedBorderColor: ColorValue;
       };
     };
   };

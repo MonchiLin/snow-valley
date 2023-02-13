@@ -1,12 +1,8 @@
 import React from 'react';
-import { TextInput, View } from 'react-native';
+import { Paper } from 'snow-valley';
 
 const DeleteText = () => {
-  return (
-    <View style={{ alignItems: 'center' }}>
-      <TextInput value={'text'} />
-    </View>
-  );
+  return <Paper />;
 };
 
 export default DeleteText;

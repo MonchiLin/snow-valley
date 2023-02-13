@@ -9,7 +9,7 @@ import Animated, {
 import { useSnowValley } from '../context/snow-valley.context';
 import { SnowVallyTheme } from '../theme';
 
-SnowVallyTheme.injectFeature({
+SnowVallyTheme.injectAComponentToken({
   FloatingInput: {
     focused: {
       labelColor: '$textPrimaryColor',
@@ -90,10 +90,10 @@ export type SelectableInputProps = {
 };
 
 export const FloatingInput = (props: SelectableInputProps) => {
-  const { feature } = useSnowValley();
+  const { componentTokens } = useSnowValley();
   const labelOffset = useSharedValue(0);
-  const containerBorderColor = useSharedValue(feature.FloatingInput.unFocused.borderColor);
-  const labelColor = useSharedValue(feature.FloatingInput.unFocused.labelColor);
+  const containerBorderColor = useSharedValue(componentTokens.FloatingInput.unFocused.borderColor);
+  const labelColor = useSharedValue(componentTokens.FloatingInput.unFocused.labelColor);
 
   const labelFontSize = useSharedValue(16);
 
@@ -118,13 +118,13 @@ export const FloatingInput = (props: SelectableInputProps) => {
   useEffect(() => {
     if (props.focused) {
       labelOffset.value = withSpring(-22, { mass: 0.3 });
-      containerBorderColor.value = feature.FloatingInput.focused.borderColor;
-      labelColor.value = feature.FloatingInput.focused.labelColor;
+      containerBorderColor.value = componentTokens.FloatingInput.focused.borderColor;
+      labelColor.value = componentTokens.FloatingInput.focused.labelColor;
       labelFontSize.value = withSpring(12, { mass: 0.3 });
     } else {
       labelOffset.value = withSpring(0, { mass: 0.3 });
-      containerBorderColor.value = feature.FloatingInput.unFocused.borderColor;
-      labelColor.value = feature.FloatingInput.unFocused.labelColor;
+      containerBorderColor.value = componentTokens.FloatingInput.unFocused.borderColor;
+      labelColor.value = componentTokens.FloatingInput.unFocused.labelColor;
       labelFontSize.value = withSpring(16, { mass: 0.3 });
     }
   }, [props.focused]);

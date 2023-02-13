@@ -36,9 +36,9 @@ export const NightModeIndicator = forwardRef<View, NightModeIndicatorProps>(
 
     useEffect(() => {
       if (isNight) {
-        animationRef.current?.play(60, 0);
-      } else {
         animationRef.current?.play(0, 60);
+      } else {
+        animationRef.current?.play(60, 0);
       }
       if (isFirstAnimation.current.start) {
         isFirstAnimation.current.start = false;
@@ -67,6 +67,7 @@ export const NightModeIndicator = forwardRef<View, NightModeIndicatorProps>(
     return (
       <Pressable ref={ref} onPress={handleChange}>
         <LottieView
+          duration={2000}
           ref={animationRef}
           onAnimationFinish={onAnimationFinish}
           autoPlay={false}
@@ -90,7 +91,6 @@ export const NightModeIndicatorRipple = (props: NightModeIndicatorProps) => {
   });
 
   const onChanged = (newState: boolean) => {
-    console.log('onChanged');
     setIsNight(newState);
     props.onChanged?.(newState);
   };
@@ -101,7 +101,7 @@ export const NightModeIndicatorRipple = (props: NightModeIndicatorProps) => {
       backgroundColor: '#121212',
       transform: [
         {
-          scale: withTiming(isNight ? 20 : 0.2),
+          scale: withTiming(isNight ? 20 : 0.2, { duration: 700 }),
         },
       ],
     } as ViewStyle;

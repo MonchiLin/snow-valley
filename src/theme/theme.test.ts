@@ -2,36 +2,41 @@ import { SnowVallyTheme } from '../theme';
 
 describe('SnowVallyTheme', () => {
   it('Should extend `The Token Object` while compiling', () => {
-    SnowVallyTheme.injectToken({ textPrimaryColor: 'white' });
-    expect(SnowVallyTheme.token.textPrimaryColor).toBe('white');
+    SnowVallyTheme.injectAToken({ textPrimaryColor: { light: 'white', dark: 'white' } });
+    expect(SnowVallyTheme.token.textPrimaryColor.light).toBe('white');
   });
 
   it('Should extend `The Token Object` during compilation with deep merge', () => {
-    SnowVallyTheme.injectToken({ textPrimaryColor: 'white', textNormalColor: 'black' });
-    expect(SnowVallyTheme.token.textPrimaryColor).toBe('white');
-    expect(SnowVallyTheme.token.textNormalColor).toBe('black');
+    SnowVallyTheme.injectAToken({
+      textPrimaryColor: { light: 'white', dark: 'white' },
+      textNormalColor: { light: 'black', dark: 'black' },
+    });
+    expect(SnowVallyTheme.token.textPrimaryColor.light).toBe('white');
+    expect(SnowVallyTheme.token.textPrimaryColor.dark).toBe('white');
+    expect(SnowVallyTheme.token.textNormalColor.light).toBe('black');
+    expect(SnowVallyTheme.token.textNormalColor.dark).toBe('black');
   });
 
   it('Should extend `The Feature Object` while compiling', () => {
-    SnowVallyTheme.injectFeature({ Toast: { zIndex: 1000 } });
-    expect(SnowVallyTheme.feature.Toast.zIndex).toBe(1000);
+    SnowVallyTheme.injectAComponentToken({ Toast: { zIndex: 1000 } });
+    expect(SnowVallyTheme.componentToken.Toast.zIndex).toBe(1000);
   });
 
   it('Should extend `The Feature Object` during compilation with deep merge', () => {
-    SnowVallyTheme.injectFeature({ FloatingInput: { unFocused: { labelColor: 'white' } } });
-    expect(SnowVallyTheme.feature.FloatingInput.unFocused.labelColor).toBe('white');
-    SnowVallyTheme.injectFeature({ FloatingInput: { unFocused: { labelColor: 'black' } } });
-    expect(SnowVallyTheme.feature.FloatingInput.unFocused.labelColor).toBe('black');
+    SnowVallyTheme.injectAComponentToken({ FloatingInput: { unFocused: { labelColor: 'white' } } });
+    expect(SnowVallyTheme.componentToken.FloatingInput.unFocused.labelColor).toBe('white');
+    SnowVallyTheme.injectAComponentToken({ FloatingInput: { unFocused: { labelColor: 'black' } } });
+    expect(SnowVallyTheme.componentToken.FloatingInput.unFocused.labelColor).toBe('black');
   });
 
   // 应该正确替换 $ 开头的变量
   it('Should replace `$` variable correctly', () => {
-    SnowVallyTheme.injectFeature({
+    SnowVallyTheme.injectAComponentToken({
       FloatingInput: { unFocused: { labelColor: '$textPrimaryColor' } },
     });
-    SnowVallyTheme.updateFeatureVariable();
-    expect(SnowVallyTheme.feature.FloatingInput.unFocused.labelColor).toBe(
-      SnowVallyTheme.token.textPrimaryColor
+    SnowVallyTheme.replaceComponentVariable(SnowVallyTheme.componentToken, SnowVallyTheme.token);
+    expect(SnowVallyTheme.componentToken.FloatingInput.unFocused.labelColor).toBe(
+      SnowVallyTheme.token.textPrimaryColor.light
     );
   });
 });

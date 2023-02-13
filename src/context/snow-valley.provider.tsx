@@ -5,7 +5,7 @@ import { VirtualKeyboardProvider } from '../designs/virtual-keyboard/virtual-key
 
 export const SnowValley = (props: SnowValleyProps) => {
   return (
-    <LonelySnowValley safeAreaInsets={props.safeAreaInsets}>
+    <LonelySnowValley isDarkMode={props.isDarkMode} safeAreaInsets={props.safeAreaInsets}>
       <VirtualKeyboardProvider>
         <ToastProvider globalize>{props.children}</ToastProvider>
       </VirtualKeyboardProvider>

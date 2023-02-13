@@ -71,6 +71,7 @@ Ok, 现在你可以探索 `snow-valley-ui` 的所有特性了.
 
 - `VirtualKeyboard`
 - `Toast`
+- `NightModeIndicatorRipple`
 
 ### 客制化支持
 

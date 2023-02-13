@@ -1,5 +1,6 @@
 import {
   ImageStyle,
+  Pressable,
   Text,
   TextInputProps,
   TextStyle,
@@ -12,7 +13,13 @@ import { useCallback, useEffect, useRef } from 'react';
 import VirtualKeyboardStyle from './virtual-keyboard.style';
 import { useSnowValley } from '../../context/snow-valley.context';
 import { Ionicons } from '@expo/vector-icons';
-import Animated, { AnimatedStyleProp, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, {
+  AnimatedStyleProp,
+  useAnimatedStyle,
+  withSpring,
+  FadeIn,
+  FadeOut,
+} from 'react-native-reanimated';
 import { Portal } from '@gorhom/portal';
 
 const numericGroup = [
@@ -51,6 +58,7 @@ function VirtualNumericButton(props: {
     </TouchableOpacity>
   );
 }
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 function VirtualNumericButtonGroup(props: { onPress: (key: string) => void }) {
   return (
@@ -74,7 +82,11 @@ function VirtualNumericButtonGroup(props: { onPress: (key: string) => void }) {
 }
 
 export type VirtualKeyboardStateLessProps = {
-  // 点击退格
+  // 按下退格按钮
+  onBackspacePressIn: () => void;
+  // 松开退格按钮
+  onBackspacePressOut: () => void;
+  // 按下退格按钮并松开
   onBackspacePress: () => void;
   // 点击数字
   onKeyPress: (key: string) => void;
@@ -94,16 +106,28 @@ function VirtualKeyboardStateLess(props: VirtualKeyboardStateLessProps) {
             style={[VirtualKeyboardStyle.VirtualNumericButton, { backgroundColor: 'transparent' }]}
           />
         ) : (
-          <VirtualNumericButton onPress={props.onDotPress} number={'.'} hint={'+'} />
+          <AnimatedTouchableOpacity
+            entering={FadeIn}
+            exiting={FadeOut}
+            onPress={props.onDotPress}
+            activeOpacity={0.6}
+            style={VirtualKeyboardStyle.VirtualNumericButton}
+          >
+            <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupNumber}>.</Text>
+            <View style={{ paddingLeft: 20 }}>
+              <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupHit}>+</Text>
+            </View>
+          </AnimatedTouchableOpacity>
         )}
         <VirtualNumericButton onPress={props.onKeyPress} number={0} hint={'+'} />
-        <TouchableOpacity
+        <Pressable
+          onPressIn={props.onBackspacePressIn}
+          onPressOut={props.onBackspacePressOut}
           onPress={props.onBackspacePress}
-          activeOpacity={0.6}
           style={[VirtualKeyboardStyle.VirtualNumericButton, { justifyContent: 'center' }]}
         >
           <Ionicons name="ios-backspace-outline" size={24} color="black" />
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
@@ -166,6 +190,8 @@ export function VirtualNumericKeyboardStateFull(props: VirtualNumericKeyboardPro
       >
         <VirtualKeyboardStateLess
           onBackspacePress={props.onBackspacePress}
+          onBackspacePressIn={props.onBackspacePressIn}
+          onBackspacePressOut={props.onBackspacePressOut}
           onDotPress={props.onDotPress}
           onKeyPress={props.onKeyPress}
           keyboardType={props.keyboardType}

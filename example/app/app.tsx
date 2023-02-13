@@ -8,6 +8,7 @@ import React from 'react';
 import SwitchScreen from './switch.screen';
 import { PortalProvider } from '@gorhom/portal';
 import VirtualKeyboardScreen from './virtual-keyboard.screen';
+import TestScreen from './test.screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ function Navigation() {
           <Stack.Screen name="Toast" component={ToastScreen} />
           <Stack.Screen name="Switch" component={SwitchScreen} />
           <Stack.Screen name="VirtualKeyboard" component={VirtualKeyboardScreen} />
+          <Stack.Screen name="Test" component={TestScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SnowValley>

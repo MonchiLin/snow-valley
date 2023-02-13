@@ -16,7 +16,7 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
   const phoneNumberInputRef = useRef<TextInput>(null);
   const [focused, setFocused] = useState({
     codeInput: false,
-    phoneNumberInput: true,
+    phoneNumberInput: false,
   });
   const { feature } = useSnowValley();
 
@@ -50,7 +50,6 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <Text>+</Text>
         <TextInputVirtualKeyboard
-          keyboardType={'number-pad'}
           style={{ minWidth: 60, paddingLeft: 5 }}
           ref={codeInputRef}
           autoFocus
@@ -65,7 +64,6 @@ export const PhoneNumberInput = (props: PhoneNumberInputProps) => {
         <Text>|</Text>
       </View>
       <TextInputVirtualKeyboard
-        keyboardType={'decimal-pad'}
         placeholder={'Phone number'}
         style={{ flex: 1 }}
         ref={phoneNumberInputRef}

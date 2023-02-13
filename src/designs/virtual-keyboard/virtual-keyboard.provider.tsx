@@ -13,10 +13,12 @@ import { useKeyboard } from '../../hooks/use-keyboard';
 import type { TextInput, TextInputProps } from 'react-native';
 import { Platform } from 'react-native';
 import { isInteger, isNumberAllowDotEnd } from '../../utilities/regex';
+import { useBackspace } from './virtual-keyboard.hooks';
 
 const isAndroid = Platform.OS === 'android';
 export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
   const [visible, setVisible] = useState(false);
+  const virtualKeyboardBackspace = useBackspace();
   const keyboard = useKeyboard();
   const proxyedPropses = useRef(
     new Map<
@@ -85,8 +87,23 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
     currentProxyedProps.current!.proxyedProps.onChangeText?.(text);
   }, []);
 
+  const onBackspacePressIn = () => {
+    const value = getCurrentValue();
+    virtualKeyboardBackspace.handleBackspacePressIn(value, onChangeText);
+    // const text = value.slice(0, value.length - 1);
+    // onChangeText(text);
+  };
+
+  const onBackspacePressOut = () => {
+    const value = getCurrentValue();
+    virtualKeyboardBackspace.handleBackspacePressOut();
+    const text = value.slice(0, value.length - 1);
+    onChangeText(text);
+  };
+
   const onBackspacePress = () => {
     const value = getCurrentValue();
+    virtualKeyboardBackspace.handleBackspacePress();
     const text = value.slice(0, value.length - 1);
     onChangeText(text);
   };
@@ -161,6 +178,8 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
       {props.children}
       <VirtualNumericKeyboardStateFull
         onBackspacePress={onBackspacePress}
+        onBackspacePressIn={onBackspacePressIn}
+        onBackspacePressOut={onBackspacePressOut}
         onDotPress={onDotPress}
         onKeyPress={onKeyPress}
         keyboardType={currentProxyedProps.current?.proxyedProps?.keyboardType}

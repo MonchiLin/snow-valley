@@ -1,5 +1,11 @@
 import { Button, Keyboard, StyleSheet, View } from 'react-native';
-import { Country, CountryGroup, CountryInput, PhoneNumberInput } from 'snow-valley';
+import {
+  Country,
+  CountryGroup,
+  CountryInput,
+  NightModeIndicatorRipple,
+  PhoneNumberInput,
+} from 'snow-valley';
 import { useState } from 'react';
 
 // https://emojipedia.org/flags/
@@ -73,6 +79,8 @@ export default function SignInScreen() {
         onPhoneNumberChange={onPhoneNumberChange}
         onCodeChange={onCodeChange}
       />
+      {/*<NightModeIndicator defaultIsNight={false} />*/}
+      <NightModeIndicatorRipple defaultIsNight={false} />
       <Button title={'设置中国'} onPress={onPress} />
       <Button title={'设置 US'} onPress={onPress1} />
       <Button title={'清除'} onPress={onPress2} />

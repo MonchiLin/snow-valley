@@ -29,6 +29,8 @@ export const SelectableInputSwitchView = (props: {
   const yOffset = useSharedValue(20);
   const opacity = useSharedValue(0);
   const prevIdentifier = useRef(props.identifier);
+  // 这样做的意义是保证 updateChildren 能够拿到最新的 props.children
+  const chidrenRef = useRef(props.children);
   const [currentChildren, setCurrentChildren] = useState<ReactNode>(props.children);
 
   const labelOffsetAnimatedStyles = useAnimatedStyle(() => {
@@ -40,11 +42,12 @@ export const SelectableInputSwitchView = (props: {
     };
   }, [opacity, yOffset]);
 
-  const set = () => {
-    setCurrentChildren(props.children);
+  const updateChildren = () => {
+    setCurrentChildren(chidrenRef.current);
   };
 
   useEffect(() => {
+    chidrenRef.current = props.children;
     if (props.identifier) {
       if (prevIdentifier.current) {
         // 避免重复设置
@@ -55,7 +58,7 @@ export const SelectableInputSwitchView = (props: {
         yOffset.value = withSpring(-10, { mass: 0.2 }, () => {
           yOffset.value = 20;
           opacity.value = 0.2;
-          runOnJS(set)();
+          runOnJS(updateChildren)();
           yOffset.value = withSpring(0, { mass: 0.6 });
           opacity.value = withSpring(1, { mass: 1 });
         });
@@ -67,7 +70,8 @@ export const SelectableInputSwitchView = (props: {
         opacity.value = withSpring(1, { mass: 1 });
       }
     } else {
-      setCurrentChildren(null);
+      chidrenRef.current = null;
+      updateChildren();
       yOffset.value = withSpring(20, { mass: 0.6 });
       opacity.value = withSpring(0, { mass: 1 });
     }

@@ -9,17 +9,18 @@ import {
 } from 'react';
 import { VirtualKeyboardContext } from './virtual-keyboard.context';
 import { VirtualNumericKeyboardStateFull } from './virtual-keyboard';
-import { useKeyboard } from '../../hooks/use-keyboard';
-import type { TextInput, TextInputProps } from 'react-native';
-import { Platform } from 'react-native';
+import type { KeyboardTypeOptions, TextInput, TextInputProps } from 'react-native';
+import { BackHandler, Keyboard, Platform } from 'react-native';
 import { isInteger, isNumberAllowDotEnd } from '../../utilities/regex';
 import { useBackspace } from './virtual-keyboard.hooks';
+import { useAppState } from '../../hooks';
 
 const isAndroid = Platform.OS === 'android';
+
 export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
-  const [visible, setVisible] = useState(false);
+  const [virtualKeyboardVisible, setVirtualKeyboardVisible] = useState(false);
   const virtualKeyboardBackspace = useBackspace();
-  const keyboard = useKeyboard();
+  const appState = useAppState();
   const proxyedPropses = useRef(
     new Map<
       string,
@@ -34,6 +35,7 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
     | {
         ref: TextInput | null;
         proxyedProps: TextInputProps & RefAttributes<TextInput>;
+        keyboardType: undefined | KeyboardTypeOptions;
         uid: string;
       }
     | undefined
@@ -48,21 +50,42 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
     };
   }, []);
 
+  useEffect(() => {
+    const backAction = () => {
+      if (virtualKeyboardVisible) {
+        dismiss();
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
+  }, [virtualKeyboardVisible]);
+
+  appState.onForeground(
+    useCallback(() => {
+      // 在某些情况下
+      // Android 手机聚焦到输入框后，App 切换到后台, 在切换到前台, 虚拟键盘会自动弹出
+      if (isAndroid && virtualKeyboardVisible) {
+        Keyboard.dismiss();
+        currentProxyedProps.current?.ref?.focus();
+      }
+    }, [virtualKeyboardVisible])
+  );
+
   const onVisibleChanged = (newVisible: boolean) => {
-    setVisible(newVisible);
+    setVirtualKeyboardVisible(newVisible);
   };
 
   const open = () => {
     // 如果键盘已经显示了，就等一会再显示, 避免键盘闪烁
-    if (keyboard.visible) {
-      setTimeout(() => setVisible(true), 200);
-    } else {
-      setVisible(true);
-    }
+    setVirtualKeyboardVisible(true);
   };
 
   const dismiss = useCallback(() => {
-    setVisible(false);
+    setVirtualKeyboardVisible(false);
   }, []);
 
   const getCurrentValue = useCallback(() => {
@@ -88,10 +111,7 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
   }, []);
 
   const onBackspacePressIn = () => {
-    const value = getCurrentValue();
-    virtualKeyboardBackspace.handleBackspacePressIn(value, onChangeText);
-    // const text = value.slice(0, value.length - 1);
-    // onChangeText(text);
+    virtualKeyboardBackspace.handleBackspacePressIn(getCurrentValue(), onChangeText);
   };
 
   const onBackspacePressOut = () => {
@@ -117,6 +137,10 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
     onChangeText(text);
   };
 
+  /**
+   * 点击数值
+   * @param key
+   */
   const onKeyPress = (key: string) => {
     const value = getCurrentValue();
     const text = value + key;
@@ -142,19 +166,19 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
           proxyedProps: textInputProps,
           ref: refMock.current,
           uid: id,
+          keyboardType: originProps.keyboardType,
         };
-        if (isAndroid) {
-          keyboard.dismiss();
-        }
         originProps.onFocus?.(e);
         open();
       },
       onBlur: (e) => {
-        currentProxyedProps.current = undefined;
         originProps.onBlur?.(e);
         dismiss();
       },
+      // 仅在 ios 生效
       showSoftInputOnFocus: false,
+      // 仅在 android 生效
+      keyboardType: 'none' as any,
       ref: (_ref: TextInput | null) => {
         refMock.current = _ref;
         if (originRef) {
@@ -173,7 +197,7 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
 
   return (
     <VirtualKeyboardContext.Provider
-      value={{ visible, open: open, dismiss: dismiss, proxyingProps }}
+      value={{ visible: virtualKeyboardVisible, open: open, dismiss: dismiss, proxyingProps }}
     >
       {props.children}
       <VirtualNumericKeyboardStateFull
@@ -182,8 +206,8 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
         onBackspacePressOut={onBackspacePressOut}
         onDotPress={onDotPress}
         onKeyPress={onKeyPress}
-        keyboardType={currentProxyedProps.current?.proxyedProps?.keyboardType}
-        visible={visible}
+        keyboardType={currentProxyedProps.current?.keyboardType}
+        visible={virtualKeyboardVisible}
         onVisibleChanged={onVisibleChanged}
       />
     </VirtualKeyboardContext.Provider>

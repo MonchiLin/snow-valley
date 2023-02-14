@@ -22,7 +22,7 @@ yarn add snow-valley-ui
 `snow-valley-ui` 使用了 `react-native-reanimated` 与 `@gorhom/portal` 两个库, 为了让 `snow-valley-ui` 的组件能够正常工作, 你需要在你的项目中安装这两个库.
 如果你已经安装了这两个依赖, 请跳过这一步.
 ```bash
-expo install react-native-reanimated @gorhom/portal
+expo install react-native-reanimated @gorhom/portal lottie-react-native expo-haptics
 ```
 
 ## 启动

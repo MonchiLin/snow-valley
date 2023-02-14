@@ -14,6 +14,7 @@ import { BackHandler, Keyboard, Platform } from 'react-native';
 import { isInteger, isNumberAllowDotEnd } from '../../utilities/regex';
 import { useBackspace } from './virtual-keyboard.hooks';
 import { useAppState } from '../../hooks';
+import * as Haptics from 'expo-haptics';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -41,15 +42,7 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
     | undefined
   >(undefined);
 
-  useEffect(() => {
-    return () => {
-      // 销毁 proxyedPropses
-      proxyedPropses.current = new Map();
-      // 销毁当前的 currentProxyedProps
-      currentProxyedProps.current = undefined;
-    };
-  }, []);
-
+  // 监听返回键
   useEffect(() => {
     const backAction = () => {
       if (virtualKeyboardVisible) {
@@ -107,7 +100,10 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
         }
       }
     }
-    currentProxyedProps.current!.proxyedProps.onChangeText?.(text);
+    if (currentProxyedProps.current!.proxyedProps.onChangeText) {
+      currentProxyedProps.current!.proxyedProps.onChangeText(text);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
   }, []);
 
   const onBackspacePressIn = () => {

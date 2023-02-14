@@ -27,18 +27,18 @@ export const useBackspace = () => {
     if (!text) {
       return;
     }
-    task.current.speed = 600;
+    task.current.speed = 300;
     task.current.value = text;
 
     task.current.timer = setTimeout(() => {
       const fn = () => {
         task.current.value = task.current.value.slice(0, -1);
         setText(task.current.value);
-        task.current.speed = task.current.speed > 50 ? task.current.speed - 200 : 50;
+        task.current.speed = task.current.speed > 50 ? task.current.speed - 100 : 50;
         task.current.timer = setTimeout(fn, task.current.speed);
       };
       fn();
-    }, 800);
+    }, 200);
 
     if (text.length > 0) {
       task.current.value = task.current.value.slice(0, -1);

@@ -111,17 +111,11 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
   };
 
   const onBackspacePressOut = () => {
-    const value = getCurrentValue();
     virtualKeyboardBackspace.handleBackspacePressOut();
-    const text = value.slice(0, value.length - 1);
-    onChangeText(text);
   };
 
   const onBackspacePress = () => {
-    const value = getCurrentValue();
     virtualKeyboardBackspace.handleBackspacePress();
-    const text = value.slice(0, value.length - 1);
-    onChangeText(text);
   };
 
   /**

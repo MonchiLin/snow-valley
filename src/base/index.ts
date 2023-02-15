@@ -1,3 +1,3 @@
-export * from './floating-input';
-export * from './toast';
+export * from './ripple';
 export * from './switch';
+export * from './toast';

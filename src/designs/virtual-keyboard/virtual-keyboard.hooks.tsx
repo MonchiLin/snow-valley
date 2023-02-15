@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * 虚拟键盘的 backspace 按钮的逻辑
@@ -18,10 +18,18 @@ import { useRef } from 'react';
  */
 export const useBackspace = () => {
   const task = useRef({
-    timer: null as any,
+    firstDelay: null as any,
+    deleteTimer: null as any,
     speed: 600,
     value: '',
   });
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(task.current.firstDelay);
+      clearTimeout(task.current.deleteTimer);
+    };
+  }, []);
 
   const handleBackspacePressIn = (text: string, setText: (text: string) => void) => {
     if (!text) {
@@ -30,24 +38,23 @@ export const useBackspace = () => {
     task.current.speed = 300;
     task.current.value = text;
 
-    task.current.timer = setTimeout(() => {
+    task.current.firstDelay = setTimeout(() => {
       const fn = () => {
         task.current.value = task.current.value.slice(0, -1);
         setText(task.current.value);
         task.current.speed = task.current.speed > 50 ? task.current.speed - 100 : 50;
-        task.current.timer = setTimeout(fn, task.current.speed);
+        task.current.deleteTimer = setTimeout(fn, task.current.speed);
       };
       fn();
-    }, 200);
+    }, 600);
 
-    if (text.length > 0) {
-      task.current.value = task.current.value.slice(0, -1);
-      setText(task.current.value);
-    }
+    task.current.value = task.current.value.slice(0, -1);
+    setText(task.current.value);
   };
 
   const handleBackspacePressOut = () => {
-    clearTimeout(task.current.timer);
+    clearTimeout(task.current.firstDelay);
+    clearTimeout(task.current.deleteTimer);
   };
 
   const handleBackspacePress = () => {};

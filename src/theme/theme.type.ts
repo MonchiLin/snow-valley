@@ -1,3 +1,5 @@
+import type { ValueOf } from 'snow-valley';
+
 export declare namespace SnowVallyThemeStatic {
   interface PaletteColor {
     light: string;
@@ -13,7 +15,7 @@ export declare namespace SnowVallyThemeStatic {
     backgroundDisabledColor: PaletteColor;
   };
   type WithDollar = { [key in keyof Token]: `$${key}` };
-  type ColorValue = WithDollar[keyof WithDollar] | string;
+  type ColorValue = ValueOf<WithDollar> | string;
 
   export type ComponentToken = {
     FloatingInput: {

@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import { useSnowValley } from 'snow-valley';
+import { useSnowValley } from '../context/snow-valley.context';
 
 export const Paper = () => {
   const { tokens, isDarkMode } = useSnowValley();

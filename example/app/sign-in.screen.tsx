@@ -70,7 +70,7 @@ export default function SignInScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.boxContainer}>
       <CountryInput country={country} />
       <View style={{ height: 20 }} />
       <PhoneNumberInput
@@ -91,7 +91,7 @@ export default function SignInScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  boxContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',

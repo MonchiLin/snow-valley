@@ -1,3 +1,3 @@
-export * from './ripple';
+export * from './ripple-box';
 export * from './switch';
 export * from './toast';

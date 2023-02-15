@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
+  boxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',

@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
+  boxContainer: {
     position: 'relative',
     overflow: 'hidden',
   },
   ripple: {
-    borderRadius: 999,
+    borderRadius: 999999,
     position: 'absolute',
   },
 });

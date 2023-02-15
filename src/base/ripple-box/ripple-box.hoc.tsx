@@ -1,19 +1,19 @@
 import React, { ComponentProps, ComponentType, ForwardedRef, forwardRef } from 'react';
-import { Ripple } from './ripple';
-import type { RippleConfig } from './ripple.types';
+import { RippleBox } from './ripple-box';
+import type { RippleBoxConfig } from './ripple-box.types';
 
 type InstanceType<T> = T extends new (...args: any) => infer R ? R : any;
 
 export function withRipple<WC extends ComponentType>(
   OComponent: WC,
-  rippleConfig: RippleConfig = {}
+  rippleConfig: RippleBoxConfig = {}
 ) {
   return forwardRef((props: ComponentProps<WC>, ref: ForwardedRef<InstanceType<WC>>) => {
     return (
-      <Ripple {...rippleConfig}>
+      <RippleBox {...rippleConfig}>
         {/* @ts-ignore */}
         <OComponent {...props} ref={ref} />
-      </Ripple>
+      </RippleBox>
     );
   });
 }

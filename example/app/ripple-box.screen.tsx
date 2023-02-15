@@ -1,17 +1,17 @@
 import { Button, Text, View } from 'react-native';
-import { Ripple } from 'snow-valley';
+import { RippleBox } from 'snow-valley';
 
-export default function RippleScreen() {
+export default function RippleBoxScreen() {
   return (
     <View className={'flex-1'}>
-      <Ripple>
+      <RippleBox>
         <Button title={'asdasd'} />
-      </Ripple>
-      <Ripple>
-        <View className={'py-4 w-full'}>
+      </RippleBox>
+      <RippleBox>
+        <View className={'py-4 w-full bg-amber-100'}>
           <Text>A Loooooooooooooooooooooooooong Text</Text>
         </View>
-      </Ripple>
+      </RippleBox>
     </View>
   );
 }

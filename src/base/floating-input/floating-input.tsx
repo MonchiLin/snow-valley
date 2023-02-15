@@ -131,7 +131,7 @@ export const FloatingInput = (props: SelectableInputProps) => {
   }, [props.focused]);
 
   return (
-    <Animated.View style={[styles.container, containerAnimatedStyles]}>
+    <Animated.View style={[styles.boxContainer, containerAnimatedStyles]}>
       <Animated.View style={[styles.labelContainer, labelOffsetAnimatedStyles]}>
         <Animated.Text style={[labelStyles, props.labelStyle]}>{props.label}</Animated.Text>
       </Animated.View>

@@ -3,7 +3,7 @@ import { TextInputVirtualKeyboard } from 'snow-valley';
 import { useState } from 'react';
 
 const styles = StyleSheet.create({
-  container: {
+  boxContainer: {
     padding: 10,
     backgroundColor: '#fff',
     borderRadius: 5,
@@ -25,7 +25,7 @@ export default function VirtualKeyboardScreen() {
 
   return (
     <View style={{ alignItems: 'flex-start', backgroundColor: 'white', flex: 1 }}>
-      <View style={styles.container}>
+      <View style={styles.boxContainer}>
         <TextInputVirtualKeyboard
           style={styles.input}
           placeholder={'place input a number'}
@@ -34,7 +34,7 @@ export default function VirtualKeyboardScreen() {
         />
       </View>
 
-      <View style={styles.container}>
+      <View style={styles.boxContainer}>
         <TextInputVirtualKeyboard
           keyboardType={'decimal-pad'}
           style={styles.input}

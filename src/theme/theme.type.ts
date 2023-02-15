@@ -43,5 +43,10 @@ export declare namespace SnowVallyThemeStatic {
         checkedBorderColor: ColorValue;
       };
     };
+    RippleBox: {
+      origin: 'center' | 'point';
+      color: ColorValue;
+      duration: number;
+    };
   };
 }

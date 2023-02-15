@@ -4,7 +4,7 @@ import type {
   TapGestureHandlerEventPayload,
 } from 'react-native-gesture-handler';
 
-export interface RippleConfig {
+export interface RippleBoxConfig {
   /**
    * ripple 起点
    * @default 'point'
@@ -18,18 +18,18 @@ export interface RippleConfig {
    */
   color?: string;
   /**
-   * 是否禁用 ripple 效果
-   * @default false
-   */
-  disabled?: boolean;
-  /**
    * ripple 效果持续时间
    * @default 400
    */
   duration?: number;
 }
 
-export interface RippleProps extends RippleConfig {
+export interface RippleBoxProps extends RippleBoxConfig {
+  /**
+   * 是否禁用 ripple 效果
+   * @default false
+   */
+  disabled?: boolean;
   children: ReactNode;
   /**
    * 点击事件

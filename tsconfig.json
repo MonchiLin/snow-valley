@@ -1,10 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "react": ["./node_modules/@types/react"],
-      "snow-valley": ["./src/index"]
-    },
     "importHelpers": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,

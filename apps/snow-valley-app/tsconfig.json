@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "snow-valley-ui": ["../../packages/snow-valley-ui/src/index"],
+    }
+  }
+}

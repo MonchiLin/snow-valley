@@ -8,29 +8,20 @@ export default StyleSheet.create({
     width: '100%',
   },
   toastTopMargin: {
-    marginTop: 10,
+    marginTop: 15,
   },
   toastBottomMargin: {
-    marginBottom: 10,
+    marginBottom: 15,
   },
   toastWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.53,
-    shadowRadius: 13.97,
-
-    elevation: 21,
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    borderRadius: 6,
   },
   toast: {
     backgroundColor: 'white',
-    paddingHorizontal: 12,
-    paddingVertical: 9,
-    borderRadius: 8,
   },
   toastIcon: {
     marginRight: 12,

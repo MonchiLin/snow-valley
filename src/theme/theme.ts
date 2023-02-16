@@ -21,8 +21,8 @@ export namespace SnowVallyTheme {
       dark: '#DBDBDB',
     },
     backgroundPrimaryColor: {
-      light: '#53ade9',
-      dark: 'black',
+      light: '#ffffff',
+      dark: '#000000',
     },
     backgroundDisabledColor: {
       light: '#b0b5b9',

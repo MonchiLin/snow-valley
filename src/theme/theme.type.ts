@@ -14,6 +14,11 @@ export declare namespace SnowVallyThemeStatic {
     backgroundPrimaryColor: PaletteColor;
     backgroundDisabledColor: PaletteColor;
   };
+
+  export type TokenPlain = {
+    [key in keyof Token]: string;
+  };
+
   type WithDollar = { [key in keyof Token]: `$${key}` };
   type ColorValue = ValueOf<WithDollar> | string;
 

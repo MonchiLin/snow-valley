@@ -2,7 +2,12 @@ import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Portal } from '@gorhom/portal';
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import Animated, {
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 import type { Bounds } from '../../shared-types';
 
 export type NightModeIndicatorProps = {
@@ -82,6 +87,8 @@ export const NightModeIndicator = forwardRef<View, NightModeIndicatorProps>(
 
 export const NightModeIndicatorRipple = (props: NightModeIndicatorProps) => {
   const [isNight, setIsNight] = useState(props.defaultIsNight);
+  const scale = useSharedValue(0.2);
+  const opacity = useSharedValue(1);
   const nightModeIndicatorRef = useRef<View | null>(null);
   const [nightModeIndicatorBounds, setNightModeIndicatorBounds] = useState<Bounds>({
     x: 0,
@@ -95,17 +102,34 @@ export const NightModeIndicatorRipple = (props: NightModeIndicatorProps) => {
     props.onChanged?.(newState);
   };
 
+  useEffect(() => {
+    if (isNight) {
+      scale.value = withTiming(20, { duration: 1000 }, () => {
+        runOnJS(RunOnJS)();
+      });
+      opacity.value = withTiming(0.2, { duration: 1000 });
+    } else {
+    }
+  }, [isNight]);
+
+  const RunOnJS = () => {
+    props.onAnimationFinish?.(isNight);
+    scale.value = 0;
+    opacity.value = 0;
+  };
+
   const style = useAnimatedStyle(() => {
     return {
       borderRadius: 9999,
-      backgroundColor: '#121212',
+      backgroundColor: '#000000',
+      opacity: opacity.value,
       transform: [
         {
-          scale: withTiming(isNight ? 20 : 0.2, { duration: 700 }),
+          scale: scale.value,
         },
       ],
     } as ViewStyle;
-  }, [isNight]);
+  }, [opacity, scale]);
 
   const onLayout = () => {
     nightModeIndicatorRef.current!.measure((x, y, width, height, pageX, pageY) => {

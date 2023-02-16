@@ -5,6 +5,8 @@ import {
   CountryInput,
   NightModeIndicatorRipple,
   PhoneNumberInput,
+  useSnowValley,
+  useSnowValleyTokens,
 } from 'snow-valley';
 import { useState } from 'react';
 
@@ -31,6 +33,8 @@ const countries = new CountryGroup([
 ]);
 
 export default function SignInScreen() {
+  const snowValley = useSnowValley();
+  const tokens = useSnowValleyTokens();
   const [country, setCountry] = useState<Country | null>(null);
   const [code, setCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -70,7 +74,7 @@ export default function SignInScreen() {
   };
 
   return (
-    <View style={styles.boxContainer}>
+    <View style={[styles.boxContainer, { backgroundColor: tokens.backgroundPrimaryColor }]}>
       <CountryInput country={country} />
       <View style={{ height: 20 }} />
       <PhoneNumberInput
@@ -80,7 +84,7 @@ export default function SignInScreen() {
         onCodeChange={onCodeChange}
       />
       {/*<NightModeIndicator defaultIsNight={false} />*/}
-      <NightModeIndicatorRipple defaultIsNight={false} />
+      <NightModeIndicatorRipple onAnimationFinish={snowValley.toggleTheme} defaultIsNight={false} />
       <Button title={'设置中国'} onPress={onPress} />
       <Button title={'设置 US'} onPress={onPress1} />
       <Button title={'清除'} onPress={onPress2} />

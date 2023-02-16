@@ -20,7 +20,7 @@ export const useBackspace = () => {
   const task = useRef({
     firstDelay: null as any,
     deleteTimer: null as any,
-    speed: 600,
+    speed: 300,
     value: '',
   });
 
@@ -46,7 +46,7 @@ export const useBackspace = () => {
         task.current.deleteTimer = setTimeout(fn, task.current.speed);
       };
       fn();
-    }, 600);
+    }, 300);
 
     task.current.value = task.current.value.slice(0, -1);
     setText(task.current.value);

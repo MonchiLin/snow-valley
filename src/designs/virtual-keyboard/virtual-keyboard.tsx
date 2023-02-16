@@ -1,6 +1,5 @@
 import {
   ImageStyle,
-  Pressable,
   Text,
   TextInputProps,
   TextStyle,
@@ -9,56 +8,77 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { useCallback, useEffect, useRef } from 'react';
+import { ReactNode, useCallback, useEffect, useRef } from 'react';
 import VirtualKeyboardStyle from './virtual-keyboard.style';
 import { useSnowValley } from '../../context/snow-valley.context';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, {
   AnimatedStyleProp,
-  useAnimatedStyle,
-  withSpring,
   FadeIn,
   FadeOut,
+  useAnimatedStyle,
+  withSpring,
 } from 'react-native-reanimated';
 import { Portal } from '@gorhom/portal';
 
 const numericGroup = [
   [
-    { number: 1, hit: '' },
-    { number: 2, hit: 'ABC' },
-    { number: 3, hit: 'EDF' },
+    { keyValue: 1, hit: '' },
+    { keyValue: 2, hit: 'ABC' },
+    { keyValue: 3, hit: 'EDF' },
   ],
   [
-    { number: 4, hit: 'GHI' },
-    { number: 5, hit: 'JKL' },
-    { number: 6, hit: 'MNO' },
+    { keyValue: 4, hit: 'GHI' },
+    { keyValue: 5, hit: 'JKL' },
+    { keyValue: 6, hit: 'MNO' },
   ],
   [
-    { number: 7, hit: 'PQRS' },
-    { number: 8, hit: 'TUV' },
-    { number: 9, hit: 'WXYZ' },
+    { keyValue: 7, hit: 'PQRS' },
+    { keyValue: 8, hit: 'TUV' },
+    { keyValue: 9, hit: 'WXYZ' },
   ],
 ];
 
-function VirtualNumericButton(props: {
-  number: number | string;
-  hint: string;
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+
+interface VirtualButtonProps {
   onPress: (key: string) => void;
-}) {
+  keyValue?: string | number;
+  hit?: string;
+  children?: ReactNode;
+  onPressIn?: () => void;
+  onPressOut?: () => void;
+}
+
+function VirtualBoardKey(props: VirtualButtonProps) {
   return (
-    <TouchableOpacity
-      onPress={() => props.onPress(props.number.toString())}
+    <AnimatedTouchableOpacity
+      entering={FadeIn}
+      exiting={FadeOut}
+      onPressOut={props.onPressOut}
+      onPressIn={props.onPressIn}
+      onPress={() => props.onPress(props.keyValue ? props.keyValue.toString() : '')}
       activeOpacity={0.6}
-      style={VirtualKeyboardStyle.VirtualNumericButton}
+      style={[
+        VirtualKeyboardStyle.VirtualNumericButton,
+        { justifyContent: props.hit ? 'space-between' : 'center' },
+      ]}
     >
-      <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupNumber}>{props.number}</Text>
-      <View style={{ paddingLeft: 20 }}>
-        <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupHit}>{props.hint}</Text>
-      </View>
-    </TouchableOpacity>
+      {props.children ? (
+        props.children
+      ) : (
+        <>
+          <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupNumber}>{props.keyValue}</Text>
+          {props.hit && (
+            <View style={{ paddingLeft: 20 }}>
+              <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupHit}>{props.hit}</Text>
+            </View>
+          )}
+        </>
+      )}
+    </AnimatedTouchableOpacity>
   );
 }
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
 function VirtualNumericButtonGroup(props: { onPress: (key: string) => void }) {
   return (
@@ -67,11 +87,11 @@ function VirtualNumericButtonGroup(props: { onPress: (key: string) => void }) {
         return (
           <View style={VirtualKeyboardStyle.VirtualNumericButtonGroupRow} key={index}>
             {col.map((row) => (
-              <VirtualNumericButton
+              <VirtualBoardKey
                 onPress={props.onPress}
-                key={row.number}
-                number={row.number}
-                hint={row.hit}
+                keyValue={row.keyValue}
+                key={row.keyValue}
+                hit={row.hit}
               />
             ))}
           </View>
@@ -106,28 +126,16 @@ function VirtualKeyboardStateLess(props: VirtualKeyboardStateLessProps) {
             style={[VirtualKeyboardStyle.VirtualNumericButton, { backgroundColor: 'transparent' }]}
           />
         ) : (
-          <AnimatedTouchableOpacity
-            entering={FadeIn}
-            exiting={FadeOut}
-            onPress={props.onDotPress}
-            activeOpacity={0.6}
-            style={VirtualKeyboardStyle.VirtualNumericButton}
-          >
-            <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupNumber}>.</Text>
-            <View style={{ paddingLeft: 20 }}>
-              <Text style={VirtualKeyboardStyle.VirtualNumericButtonGroupHit}>+</Text>
-            </View>
-          </AnimatedTouchableOpacity>
+          <VirtualBoardKey onPress={props.onDotPress} keyValue={'.'} hit={'+'} />
         )}
-        <VirtualNumericButton onPress={props.onKeyPress} number={0} hint={'+'} />
-        <Pressable
+        <VirtualBoardKey onPress={props.onKeyPress} keyValue={0} hit={'+'} />
+        <VirtualBoardKey
           onPressIn={props.onBackspacePressIn}
           onPressOut={props.onBackspacePressOut}
           onPress={props.onBackspacePress}
-          style={[VirtualKeyboardStyle.VirtualNumericButton, { justifyContent: 'center' }]}
         >
           <Ionicons name="ios-backspace-outline" size={24} color="black" />
-        </Pressable>
+        </VirtualBoardKey>
       </View>
     </View>
   );

@@ -7,6 +7,7 @@ import type { ReactNode } from 'react';
 import Animated, { Easing, Layout } from 'react-native-reanimated';
 import { ToastAnimation } from './toast.animation';
 import styles from './toast.style';
+import { Shadow } from 'react-native-shadow-2';
 
 SnowVallyTheme.injectAComponentToken({
   Toast: {
@@ -28,10 +29,10 @@ const createToastType =
   (icon: ReactNode) =>
   ({ toast }: { toast: ToastOptions }) => {
     return (
-      <View style={styles.toastWrapper}>
+      <Shadow startColor={`rgb(0 0 0 / 6%)`} distance={12} style={styles.toastWrapper}>
         {icon}
         <ToastRender toast={toast} />
-      </View>
+      </Shadow>
     );
   };
 

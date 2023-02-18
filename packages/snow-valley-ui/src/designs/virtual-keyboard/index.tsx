@@ -1,4 +1,4 @@
-export * from './virtual-keyboard.style';
+export * as VirtualKeyboardStyle from './virtual-keyboard.style';
 export * from './virtual-keyboard.hoc';
 export * from './virtual-keyboard.prebuilt';
 export * from './virtual-keyboard.context';

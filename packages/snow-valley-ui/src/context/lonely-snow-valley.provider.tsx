@@ -24,13 +24,11 @@ export const LonelySnowValley = ({ isDarkMode = false, ...props }: SnowValleyPro
 
   const toggleTheme = (isDark?: boolean) => {
     if (isDark == null) {
-      setIsDarkMode(!isDarkMode);
+      setIsDarkMode(!_isDarkMode);
     } else {
       setIsDarkMode(isDark);
     }
   };
-
-  console.log('new darkmode', _isDarkMode);
 
   return (
     <SnowValleyContext.Provider

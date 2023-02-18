@@ -1,4 +1,4 @@
-import { merge } from 'lodash-es';
+import merge from 'lodash.merge';
 import type { SnowVallyThemeStatic } from './theme.type';
 import type { DeepPartial } from '../shared-types';
 

@@ -1,12 +1,14 @@
-import { Button, Keyboard, StyleSheet, View } from 'react-native';
+import { Button, Keyboard, Pressable, StyleSheet, View } from 'react-native';
 import {
   Country,
   CountryGroup,
   CountryInput,
-  NightModeIndicatorRipple,
   PhoneNumberInput,
+  ThemeSwitcherIndicator,
+  ThemeSwitcherProvider,
   useSnowValley,
   useSnowValleyTokens,
+  useThemeSwitcher,
 } from 'snow-valley-ui';
 import { useState } from 'react';
 
@@ -32,9 +34,10 @@ const countries = new CountryGroup([
   }),
 ]);
 
-export default function SignInScreen() {
+function _SignInScreen() {
   const snowValley = useSnowValley();
   const tokens = useSnowValleyTokens();
+  const themeSwitcher = useThemeSwitcher();
   const [country, setCountry] = useState<Country | null>(null);
   const [code, setCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -83,14 +86,23 @@ export default function SignInScreen() {
         onPhoneNumberChange={onPhoneNumberChange}
         onCodeChange={onCodeChange}
       />
-      {/*<NightModeIndicator defaultIsNight={false} />*/}
-      <NightModeIndicatorRipple onAnimationFinish={snowValley.toggleTheme} defaultIsNight={false} />
-      <Button title={'设置中国'} onPress={onPress} />
-      <Button title={'设置 US'} onPress={onPress1} />
+      <Pressable onPress={() => themeSwitcher.toggleTheme()}>
+        <ThemeSwitcherIndicator isNight={snowValley.isDarkMode} />
+      </Pressable>
+      <Button title={'设置中国11'} onPress={onPress} />
+      <Button title={'设置 US11'} onPress={onPress1} />
       <Button title={'清除'} onPress={onPress2} />
       <Button title={'隐藏键盘'} onPress={hiddenKeyboard} />
       <View style={{ height: 50 }} />
     </View>
+  );
+}
+
+export default function SignInScreen() {
+  return (
+    <ThemeSwitcherProvider>
+      <_SignInScreen />
+    </ThemeSwitcherProvider>
   );
 }
 

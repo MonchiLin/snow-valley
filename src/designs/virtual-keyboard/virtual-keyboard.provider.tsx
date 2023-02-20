@@ -13,8 +13,8 @@ import type { KeyboardTypeOptions, TextInput, TextInputProps } from 'react-nativ
 import { BackHandler, Keyboard, Platform } from 'react-native';
 import { isInteger, isNumberAllowDotEnd } from '../../utilities/regex';
 import { useBackspace } from './virtual-keyboard.hooks';
-import { useAppState } from '../../hooks';
-import * as Haptics from 'expo-haptics';
+import { useAppState } from '../../hooks/use-app-state';
+// import * as Haptics from 'expo-haptics';
 
 const isAndroid = Platform.OS === 'android';
 
@@ -102,7 +102,7 @@ export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
     }
     if (currentProxyedProps.current!.proxyedProps.onChangeText) {
       currentProxyedProps.current!.proxyedProps.onChangeText(text);
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      // Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     }
   }, []);
 

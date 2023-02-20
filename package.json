@@ -31,7 +31,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
     "prepack": "bob build",
-    "release": "release-it"
+    "release": "dotenv release-it --"
   },
   "keywords": [
     "react-native",
@@ -69,6 +69,7 @@
     "babel-preset-expo": "9.3.0",
     "commitlint": "^17.0.2",
     "del-cli": "^5.0.0",
+    "dotenv-cli": "^7.0.0",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.27.5",

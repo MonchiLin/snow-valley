@@ -2,11 +2,8 @@
   "extends": "../tsconfig",
   "references": [
     {
-      "path": "../packages/base"
+      "path": "../packages/snow-valley-ui"
     },
-    {
-      "path": "../packages/themed"
-    }
   ],
   "compilerOptions": {
     // Avoid expo-cli auto-generating a tsconfig

@@ -3,10 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from './sign-in.screen';
 import ToastScreen from './toast.screen';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import React from 'react';
 import SwitchScreen from './switch.screen';
 import { PortalProvider } from '@gorhom/portal';
@@ -27,10 +24,7 @@ function Navigation() {
           <Stack.Screen name="SignIn" component={SignInScreen} />
           <Stack.Screen name="Toast" component={ToastScreen} />
           <Stack.Screen name="Switch" component={SwitchScreen} />
-          <Stack.Screen
-            name="VirtualKeyboard"
-            component={VirtualKeyboardScreen}
-          />
+          <Stack.Screen name="VirtualKeyboard" component={VirtualKeyboardScreen} />
           <Stack.Screen name="RippleBox" component={RippleBoxScreen} />
           <Stack.Screen name="Test" component={TestScreen} />
         </Stack.Navigator>

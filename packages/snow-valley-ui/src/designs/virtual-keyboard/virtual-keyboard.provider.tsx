@@ -10,7 +10,7 @@ import { useAppState } from '../../hooks/use-app-state';
 
 const isAndroid = Platform.OS === 'android';
 
-export function VirtualKeyboardProvider(props: PropsWithChildren<{}>) {
+export function VirtualKeyboardProvider(props: PropsWithChildren) {
   const [virtualKeyboardVisible, setVirtualKeyboardVisible] = useState(false);
   const virtualKeyboardBackspace = useBackspace();
   const appState = useAppState();

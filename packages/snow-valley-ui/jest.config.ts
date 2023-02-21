@@ -1,6 +1,7 @@
-import type { Config } from 'jest';
-
-const config: Config = {
+/**
+ * @type {import('@jest/types').Config.InitialOptions}
+ */
+const config = {
   fakeTimers: {
     doNotFake: ['nextTick'],
     timerLimit: 1000,

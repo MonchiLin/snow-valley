@@ -3,7 +3,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-
+      "snow-valley-ui/*": [
+        "./packages/snow-valley-ui/src/*",
+        "./packages/snow-valley-ui/dist/*",
+      ],
     },
     "removeComments": true,
     "composite": true,
@@ -22,7 +25,7 @@
     "noStrictGenericChecks": false,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "target": "ES6",
+    "target": "ESNext",
     "allowJs": true
   },
   "exclude": [

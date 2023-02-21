@@ -1,4 +1,4 @@
-import { Button, Keyboard, Pressable, StyleSheet, View } from 'react-native';
+import { Button, Keyboard, Platform, Pressable, StyleSheet, View } from 'react-native';
 import {
   Country,
   CountryGroup,
@@ -77,12 +77,7 @@ function _SignInScreen() {
   };
 
   return (
-    <View
-      style={[
-        styles.boxContainer,
-        { backgroundColor: tokens.backgroundPrimaryColor },
-      ]}
-    >
+    <View style={[styles.boxContainer, { backgroundColor: tokens.backgroundPrimaryColor }]}>
       <CountryInput country={country} />
       <View style={{ height: 20 }} />
       <PhoneNumberInput
@@ -91,9 +86,14 @@ function _SignInScreen() {
         onPhoneNumberChange={onPhoneNumberChange}
         onCodeChange={onCodeChange}
       />
-      <Pressable onPress={() => themeSwitcher.toggleTheme()}>
-        <ThemeSwitcherIndicator isNight={snowValley.isDarkMode} />
-      </Pressable>
+      {Platform.select({
+        web: null,
+        default: (
+          <Pressable onPress={() => themeSwitcher.toggleTheme()}>
+            <ThemeSwitcherIndicator isNight={snowValley.isDarkMode} />
+          </Pressable>
+        ),
+      })}
       <Button title={'设置中国'} onPress={onPress} />
       <Button title={'设置 US'} onPress={onPress1} />
       <Button title={'清除'} onPress={onPress2} />

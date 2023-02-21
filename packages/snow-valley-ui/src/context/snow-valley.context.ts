@@ -7,8 +7,7 @@ export const SnowValleyContext = createContext({
   componentTokens: SnowVallyTheme.componentToken,
   safeAreaInsets: DEFAULT_SAFE_AREA_INSETS,
   isDarkMode: false,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  toggleTheme: (_?: boolean) => {},
+  toggleTheme: (_?: boolean) => null,
 });
 
 export const useSnowValley = () => {

@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { AppState, AppStateStatus } from 'react-native';
+import { AnyFunction } from '../shared-types';
 
 export function useAppState() {
   const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState);
-  const onForegroundHandler = useRef<Function>();
-  const onBackgroundHandler = useRef<Function>();
+  const onForegroundHandler = useRef<AnyFunction>();
+  const onBackgroundHandler = useRef<AnyFunction>();
 
-  const onForeground = (handler: Function) => {
+  const onForeground = (handler: AnyFunction) => {
     onForegroundHandler.current = handler;
   };
 
-  const onBackground = (handler: Function) => {
+  const onBackground = (handler: AnyFunction) => {
     onBackgroundHandler.current = handler;
   };
 

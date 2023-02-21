@@ -23,3 +23,5 @@ export type DeepPartial<T> = T extends object
 export type ValueOf<T> = T[keyof T];
 
 export type ComponentPropsOf<T> = T extends ComponentType<infer P> | Component<infer P> ? P : never;
+
+export type AnyFunction = (...args: any[]) => any;

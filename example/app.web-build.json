@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Snow Valley UI Example",
+    "slug": "snow-alley-ui-example",
+    "description": "A demo app for Snow Valley UI Toolkit",
+    "privacy": "public",
+    "sdkVersion": "47.0.0",
+    "platforms": ["web"],
+    "version": "1.0.0",
+    "primaryColor": "#cccccc",
+    "web": {
+      "publicPath": "/snow-valley-ui/"
+    }
+  }
+}

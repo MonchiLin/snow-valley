@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Snow Valley UI Example",
+    "slug": "snow-alley-ui-example",
+    "description": "A demo app for Snow Valley UI Toolkit",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.0.0",
+    "orientation": "default",
+    "primaryColor": "#cccccc",
+    "icon": "./assets/icons/icon.png",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "com.snow_alley_ui"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "bb901617-47fa-4b7a-9f91-279024bf8e00"
+      }
+    }
+  }
+}

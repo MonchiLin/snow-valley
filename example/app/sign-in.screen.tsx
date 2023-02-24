@@ -5,11 +5,10 @@ import {
   CountryInput,
   PhoneNumberInput,
   ThemeSwitcherIndicator,
-  ThemeSwitcherProvider,
   useSnowValley,
   useSnowValleyTokens,
-  useThemeSwitcher,
 } from 'snow-valley-ui';
+import { ThemeSwitcherRippleProvider, useThemeSwitcherRipple } from 'snow-valley-ui-skia';
 import { useState } from 'react';
 
 // https://emojipedia.org/flags/
@@ -34,10 +33,10 @@ const countries = new CountryGroup([
   }),
 ]);
 
-function _SignInScreen() {
+export default function SignInScreen() {
   const snowValley = useSnowValley();
   const tokens = useSnowValleyTokens();
-  const themeSwitcher = useThemeSwitcher();
+  const themeSwitcher = useThemeSwitcherRipple();
   const [country, setCountry] = useState<Country | null>(null);
   const [code, setCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -100,14 +99,6 @@ function _SignInScreen() {
       <Button title={'隐藏键盘'} onPress={hiddenKeyboard} />
       <View style={{ height: 50 }} />
     </View>
-  );
-}
-
-export default function SignInScreen() {
-  return (
-    <ThemeSwitcherProvider>
-      <_SignInScreen />
-    </ThemeSwitcherProvider>
   );
 }
 

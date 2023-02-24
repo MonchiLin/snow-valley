@@ -1,74 +1,19 @@
-import React, { useState } from 'react';
-import { Animated, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Canvas, Circle, Paint, vec } from '@shopify/react-native-skia';
 
-const App = () => {
-  const [darkTheme, setDarkTheme] = useState(false);
-  const [animatedValue] = useState(new Animated.Value(0));
+const width = 256;
+const height = 256;
 
-  const toggleTheme = () => {
-    setDarkTheme(!darkTheme);
-    Animated.timing(animatedValue, {
-      toValue: darkTheme ? 0 : 1,
-      duration: 200,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const backgroundColor = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [darkTheme ? '#1c1c1c' : '#e3e3e3', darkTheme ? '#e3e3e3' : '#1c1c1c'],
-  });
-
+export default () => {
+  const strokeWidth = 10;
+  const c = vec(width / 2, height / 2);
+  const r = (width - strokeWidth) / 2;
   return (
-    <Animated.View style={[styles.container, { backgroundColor }]}>
-      <TouchableWithoutFeedback onPress={toggleTheme}>
-        <View style={styles.themeSwitcher}>
-          <Animated.View
-            style={[
-              styles.circle,
-              {
-                transform: [
-                  {
-                    translateX: animatedValue.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, 25],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-      <Text style={styles.text}>Theme switcher</Text>
-    </Animated.View>
+    <Canvas style={{ width, height }}>
+      <Circle c={c} r={r} color="red">
+        <Paint color="lightblue" />
+        <Paint color="#adbce6" style="stroke" strokeWidth={strokeWidth} />
+        <Paint color="#ade6d8" style="stroke" strokeWidth={strokeWidth / 2} />
+      </Circle>
+    </Canvas>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  themeSwitcher: {
-    width: 50,
-    height: 25,
-    backgroundColor: '#FFF',
-    borderRadius: 20,
-    justifyContent: 'center',
-  },
-  circle: {
-    width: 20,
-    height: 20,
-    backgroundColor: 'black',
-    borderRadius: 20,
-  },
-  text: {
-    fontSize: 20,
-    color: '#FFF',
-    marginTop: 20,
-  },
-});
-
-export default App;

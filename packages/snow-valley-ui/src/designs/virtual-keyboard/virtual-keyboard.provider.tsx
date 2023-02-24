@@ -159,8 +159,6 @@ export function VirtualKeyboardProvider(props: PropsWithChildren) {
       },
       // 仅在 ios 生效
       showSoftInputOnFocus: false,
-      // 仅在 android 生效
-      keyboardType: 'none' as any,
       ref: (_ref: TextInput | null) => {
         refMock.current = _ref;
         if (originRef) {

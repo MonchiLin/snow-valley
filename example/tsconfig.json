@@ -4,6 +4,9 @@
     {
       "path": "../packages/snow-valley-ui"
     },
+    {
+      "path": "../packages/snow-valley-ui-skia"
+    },
   ],
   "compilerOptions": {
     // Avoid expo-cli auto-generating a tsconfig

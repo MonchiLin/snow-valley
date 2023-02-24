@@ -1,0 +1,73 @@
+{
+  "name": "snow-valley-ui-skia",
+  "version": "1.0.0",
+  "description": "A React Native UI Toolkit With Skia",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "prepublish": "tsc --composite false",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "react native",
+    "react native ui",
+    "react native components",
+    "ui library",
+    "ios",
+    "android",
+    "bootstrap"
+  ],
+  "scripts": {
+    "build": "tsc --composite false",
+    "test": "jest",
+    "test:update": "jest -u",
+    "test:ci": "jest --runInBand",
+    "test:watch": "jest --watch",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "clean-install": "rimraf node_modules && yarn"
+  },
+  "author": "MonchiLin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/snow-valley/snow-valley-ui/issues"
+  },
+  "homepage": "https://github.com/snow-valley/snow-valley-ui",
+  "devDependencies": {
+    "@babel/core": "^7.19.3",
+    "@gorhom/portal": "^1.0.14",
+    "@release-it/conventional-changelog": "^5.0.0",
+    "@shopify/react-native-skia": "0.1.172",
+    "@types/react": "~18.0.24",
+    "@types/react-native": "~0.70.6",
+    "jest": "^29.4.1",
+    "jest-expo": "^47.0.1",
+    "metro-react-native-babel-preset": "^0.70.2",
+    "react": "18.2.0",
+    "react-native": "0.71.3",
+    "react-native-builder-bob": "^0.20.0",
+    "react-native-reanimated": "~2.14.4",
+    "react-native-view-shot": "3.5.0",
+    "release-it": "^15.0.0",
+    "snow-valley-ui": "*",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
+  },
+  "peerDependencies": {
+    "@gorhom/portal": "*",
+    "@shopify/react-native-skia": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-reanimated": "*",
+    "react-native-view-shot": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snow-valley/snow-valley-ui.git",
+    "directory": "packages/snow-valley-ui"
+  }
+}

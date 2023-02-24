@@ -11,6 +11,7 @@ import VirtualKeyboardScreen from './virtual-keyboard.screen';
 
 import TestScreen from './test.screen';
 import RippleBoxScreen from './ripple-box.screen';
+import { ThemeSwitcherRippleProvider } from 'snow-valley-ui-skia/designs';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,16 +20,18 @@ function Navigation() {
 
   return (
     <SnowValley safeAreaInsets={safeArea}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={'SignIn'}>
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="Toast" component={ToastScreen} />
-          <Stack.Screen name="Switch" component={SwitchScreen} />
-          <Stack.Screen name="VirtualKeyboard" component={VirtualKeyboardScreen} />
-          <Stack.Screen name="RippleBox" component={RippleBoxScreen} />
-          <Stack.Screen name="Test" component={TestScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ThemeSwitcherRippleProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName={'SignIn'}>
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="Toast" component={ToastScreen} />
+            <Stack.Screen name="Switch" component={SwitchScreen} />
+            <Stack.Screen name="VirtualKeyboard" component={VirtualKeyboardScreen} />
+            <Stack.Screen name="RippleBox" component={RippleBoxScreen} />
+            <Stack.Screen name="Test" component={TestScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ThemeSwitcherRippleProvider>
     </SnowValley>
   );
 }

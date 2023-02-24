@@ -7,6 +7,10 @@
         "./packages/snow-valley-ui/src/*",
         "./packages/snow-valley-ui/dist/*",
       ],
+      "snow-valley-ui-skia/*": [
+        "./packages/snow-valley-ui-skia/src/*",
+        "./packages/snow-valley-ui-skia/dist/*",
+      ],
     },
     "removeComments": true,
     "composite": true,

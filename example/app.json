@@ -24,7 +24,7 @@
     },
     "userInterfaceStyle": "automatic",
     "android": {
-      "package": "com.snow_alley_ui"
+      "package": "com.snow_valley_ui"
     },
     "extra": {
       "eas": {

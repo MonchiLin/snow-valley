@@ -4,12 +4,12 @@
     "baseUrl": ".",
     "paths": {
       "snow-valley-ui/*": [
-        "./packages/snow-valley-ui/src/*",
-        "./packages/snow-valley-ui/dist/*",
+        "./packages/ui/src/*",
+        "./packages/ui/dist/*",
       ],
       "snow-valley-ui-skia/*": [
-        "./packages/snow-valley-ui-skia/src/*",
-        "./packages/snow-valley-ui-skia/dist/*",
+        "./packages/skia/src/*",
+        "./packages/skia/dist/*",
       ],
     },
     "removeComments": true,

@@ -19862,9 +19862,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"snow-valley-ui-skia@1.0.0, snow-valley-ui-skia@workspace:packages/snow-valley-ui-skia":
+"snow-valley-ui-skia@1.0.0, snow-valley-ui-skia@workspace:packages/skia":
   version: 0.0.0-use.local
-  resolution: "snow-valley-ui-skia@workspace:packages/snow-valley-ui-skia"
+  resolution: "snow-valley-ui-skia@workspace:packages/skia"
   dependencies:
     "@babel/core": ^7.19.3
     "@gorhom/portal": ^1.0.14
@@ -19894,9 +19894,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"snow-valley-ui@*, snow-valley-ui@1.0.0, snow-valley-ui@workspace:packages/snow-valley-ui":
+"snow-valley-ui@*, snow-valley-ui@1.0.0, snow-valley-ui@workspace:packages/ui":
   version: 0.0.0-use.local
-  resolution: "snow-valley-ui@workspace:packages/snow-valley-ui"
+  resolution: "snow-valley-ui@workspace:packages/ui"
   dependencies:
     "@babel/core": ^7.19.3
     "@expo/vector-icons": ^13.0.0

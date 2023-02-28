@@ -11,10 +11,10 @@ module.exports = function (api) {
         {
           extensions: ['.js', '.ios.js', '.android.js', '.json', '.tsx', '.ts'],
           alias: {
-            'snow-valley-ui/dist': path.resolve(__dirname, '..', 'packages/snow-valley-ui/src'),
-            'snow-valley-ui': path.resolve(__dirname, '..', 'packages/snow-valley-ui/src'),
-            'snow-valley-ui-skia': path.resolve(__dirname, '..', 'packages/snow-valley-ui-skia/src'),
-            'snow-valley-ui-skia/dist': path.resolve(__dirname, '..', 'packages/snow-valley-ui-skia/src'),
+            'snow-valley-ui/dist': path.resolve(__dirname, '..', 'packages/ui/src'),
+            'snow-valley-ui': path.resolve(__dirname, '..', 'packages/ui/src'),
+            'snow-valley-ui-skia': path.resolve(__dirname, '..', 'packages/skia/src'),
+            'snow-valley-ui-skia/dist': path.resolve(__dirname, '..', 'packages/skia/src'),
           },
         },
       ],

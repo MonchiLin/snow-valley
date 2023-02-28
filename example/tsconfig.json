@@ -2,10 +2,10 @@
   "extends": "../tsconfig",
   "references": [
     {
-      "path": "../packages/snow-valley-ui"
+      "path": "../packages/ui"
     },
     {
-      "path": "../packages/snow-valley-ui-skia"
+      "path": "../packages/skia"
     },
   ],
   "compilerOptions": {

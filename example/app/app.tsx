@@ -4,19 +4,43 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from './sign-in.screen';
 import ToastScreen from './toast.screen';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import React from 'react';
+import React, { useEffect } from 'react';
 import SwitchScreen from './switch.screen';
 import { PortalProvider } from '@gorhom/portal';
 import VirtualKeyboardScreen from './virtual-keyboard.screen';
-
 import TestScreen from './test.screen';
 import RippleBoxScreen from './ripple-box.screen';
 import { ThemeSwitcherRippleProvider } from 'snow-valley-ui-skia/designs';
+import { mtprotoApp } from './mt-proto';
+import WebviewCrypto from 'react-native-webview-crypto';
 
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
   const safeArea = useSafeAreaInsets();
+
+  useEffect(() => {
+    mtprotoApp
+      .call('help.countriesList')
+      .then((result) => {
+        console.log('country:', result.country);
+      })
+      .catch((err) => {
+        console.log('err:', err);
+      });
+    mtprotoApp
+      .call('users.getFullUser', {
+        id: {
+          _: 'inputUserSelf',
+        },
+      })
+      .then((result) => {
+        console.log('users.getFullUser:', result.country);
+      })
+      .catch((err) => {
+        console.log('users.getFullUser err:', err);
+      });
+  }, []);
 
   return (
     <SnowValley safeAreaInsets={safeArea}>
@@ -39,6 +63,7 @@ function Navigation() {
 export default function Entry() {
   return (
     <PortalProvider>
+      <WebviewCrypto />
       <SafeAreaProvider>
         <Navigation />
       </SafeAreaProvider>

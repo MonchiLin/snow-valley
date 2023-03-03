@@ -4,6 +4,7 @@ module.exports = {
   plugins: ['prettier', '@typescript-eslint'],
   root: true,
   rules: {
+    'no-console': 'off',
     'prettier/prettier': ['error'],
     'react-native/no-inline-styles': 'off',
     'react/react-in-jsx-scope': 'off',
@@ -14,11 +15,5 @@ module.exports = {
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-empty-function': 'off',
-    'no-console': [
-      'error',
-      {
-        allow: ['warn', 'error'],
-      },
-    ],
   },
 };
